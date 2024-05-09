@@ -210,5 +210,6 @@ void Bank::displayBalance()
              << endl;
     }
     cout << "---------------------------" << endl;
-    cout << setw(26) << right << "$ " << this->total << endl;
+    cout << setw(20) << right << " $"
+         << setw(7) << right << this->total << endl;
 }

@@ -96,6 +96,7 @@ int readFoodData(string foodsFile, LinkedList *list)
 
                     // Validate Price
                     // Checking if the price can be split with "." delimitter
+                    // cout << "INSIDE | CHECK" << endl;
                     if (token.size() == 2)
                     {
                         string dollarStr = token[0];
@@ -108,7 +109,7 @@ int readFoodData(string foodsFile, LinkedList *list)
                             cents = std::stoi(token[1]);
 
                             // Check if values are below zero
-                            if (dollars > 0 && cents > 0)
+                            if (dollars >= 0 && cents >= 0)
                             {
                                 FoodItem *item = new FoodItem(foodId, foodName, foodDesc, new Price((unsigned)dollars, (unsigned)cents), DEFAULT_FOOD_STOCK_LEVEL);
                                 list->addBack(item);
