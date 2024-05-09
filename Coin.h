@@ -7,17 +7,17 @@
 // enumeration representing the various types of currency available in the system.
 enum Denomination
 {
-    FIVE_CENTS,
-    TEN_CENTS,
-    TWENTY_CENTS,
-    FIFTY_CENTS,
-    ONE_DOLLAR,
-    TWO_DOLLARS,
-    FIVE_DOLLARS,
-    TEN_DOLLARS,
-    TWENTY_DOLLARS,
-    FIFTY_DOLLARS,
-    HUNDRED_DOLLARS
+    HUNDRED_DOLLAR = 10000,
+    FIFTY_DOLLAR = 5000,
+    TWENTY_DOLLAR = 2000,
+    TEN_DOLLAR = 1000,
+    FIVE_DOLLAR = 500,
+    TWO_DOLLAR = 200,
+    ONE_DOLLAR = 100,
+    FIFTY_CENT = 50,
+    TWENTY_CENT = 20,
+    TEN_CENT = 10,
+    FIVE_CENT = 5
 };
 
 // represents a coin type stored in the cash register perhaps. Each demonination
@@ -25,10 +25,21 @@ enum Denomination
 class Coin
 {
 public:
-    // the denomination type
-    enum Denomination denom;
+    Coin(Denomination denom, unsigned count);
+    ~Coin();
 
-    // the count of how many of these are in the cash register
+    // Getters
+    float getTotal();
+    Denomination getDenom();
+    unsigned getCount();
+
+    void calcTotal();
+    void addCount(int count);
+    void minusCount(int count);
+
+private:
+    enum Denomination denom;
+    float total;
     unsigned count;
 };
 

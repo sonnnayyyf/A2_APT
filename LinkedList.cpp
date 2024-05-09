@@ -176,4 +176,5 @@ void LinkedList::printItems()
         curr->foodItem->printItem();
         curr = curr->next;
     }
+    cout << endl;
 }

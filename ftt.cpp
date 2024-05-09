@@ -3,10 +3,12 @@
 #include <string>
 #include <vector>
 #include "LinkedList.h"
+#include "Bank.h"
 #include <string.h>
 
 #define EXPECTED_ARGUMENTS 3
-#define NUM_OF_DENOMS
+#define PRICE_DELIMITTER "."
+#define FOOD_DELIMITTER "|"
 
 using std::cin;
 using std::cout;
@@ -16,11 +18,13 @@ using std::ofstream;
 using std::string;
 using std::vector;
 
-int readFoodData(string foodsFile, LinkedList &list);
+int readFoodData(string foodsFile, LinkedList *list);
 
-int readCoinData(string coinsFile, Coin *coinsArray[]);
+int readCoinData(string coinsFile, Bank *bank);
 
 void splitString(string s, vector<string> &tokens, string delimeter);
+
+bool isNumber(string &s);
 
 string readInput();
 
@@ -41,20 +45,22 @@ int main(int argc, char **argv)
     {
         string foodsFile = argv[1];
         string coinsFile = argv[2];
-        LinkedList list;
 
-        Coin *coinsArray[NUM_DENOMS];
+        LinkedList *list = new LinkedList();
+        Bank *bank = new Bank();
 
         readFoodData(foodsFile, list);
-        readCoinData(coinsFile, coinsArray);
+        cout << endl;
+        readCoinData(coinsFile, bank);
 
-        list.printItems();
+        list->printItems();
+        bank->displayBalance();
     }
 
     return EXIT_SUCCESS;
 }
 
-int readFoodData(string foodsFile, LinkedList &list)
+int readFoodData(string foodsFile, LinkedList *list)
 {
     int success = 0;
     bool reading = true;
@@ -69,9 +75,10 @@ int readFoodData(string foodsFile, LinkedList &list)
         while (getline(inputFile, foodItem) && reading && !inputFile.eof())
         {
             std::vector<std::string> token = {};
-            splitString(foodItem, token, "|");
+            splitString(foodItem, token, FOOD_DELIMITTER);
 
             // Check if token are missing or more
+            // Checking if the string is split with the "|" delimitter properly
             // If there are 4 token contiue
             if (token.size() == 4)
             {
@@ -85,24 +92,34 @@ int readFoodData(string foodsFile, LinkedList &list)
                 if (foodId.length() == IDLEN && foodName.length() <= NAMELEN && foodDesc.length() <= DESCLEN)
                 {
                     // Spliting price into dollars and cents
-                    splitString(token[3], token, ".");
+                    splitString(foodPrice, token, PRICE_DELIMITTER);
 
                     // Validate Price
+                    // Checking if the price can be split with "." delimitter
                     if (token.size() == 2)
                     {
-                        // Check if values can be converted into integers
-                        try
+                        string dollarStr = token[0];
+                        string centsStr = token[1];
+
+                        // Checking if the 2 strings are valid numbers
+                        if (isNumber(dollarStr) && isNumber(centsStr))
                         {
                             dollars = std::stoi(token[0]);
                             cents = std::stoi(token[1]);
-                        }
-                        catch (const std::invalid_argument &e)
-                        {
-                            reading = false;
-                        }
 
-                        // Check if values are below zero
-                        if (dollars < 0 && cents < 0)
+                            // Check if values are below zero
+                            if (dollars > 0 && cents > 0)
+                            {
+                                FoodItem *item = new FoodItem(foodId, foodName, foodDesc, new Price((unsigned)dollars, (unsigned)cents), DEFAULT_FOOD_STOCK_LEVEL);
+                                list->addBack(item);
+                                success = true;
+                            }
+                            else
+                            {
+                                reading = false;
+                            }
+                        }
+                        else
                         {
                             reading = false;
                         }
@@ -116,8 +133,6 @@ int readFoodData(string foodsFile, LinkedList &list)
                 {
                     reading = false;
                 }
-                FoodItem *item = new FoodItem(foodId, foodName, foodDesc, new Price((unsigned)dollars, (unsigned)cents), DEFAULT_FOOD_STOCK_LEVEL);
-                list.addBack(item);
             }
             else
             {
@@ -131,19 +146,50 @@ int readFoodData(string foodsFile, LinkedList &list)
     return success;
 }
 
-int readCoinData(string coinsFile, Coin *coinsArray[])
+int readCoinData(string coinsFile, Bank *bank)
 {
     int success = 0;
     int reading = true;
+    int count = 0;
+    int cents = 0;
     string coinItem = "";
 
     // Open the coins file
     ifstream inputFile(coinsFile);
 
+    // Checks if files exists
     if (inputFile.is_open())
     {
         while (getline(inputFile, coinItem) && reading && !inputFile.eof())
-            cout << coinItem << endl;
+        {
+            std::vector<std::string> token = {};
+            splitString(coinItem, token, DELIM);
+
+            // Check if the string was split into two pieces meaning the existence of ","
+            if (token.size() == 2)
+            {
+                string centsStr = token[0];
+                string countStr = token[1];
+                if (isNumber(centsStr) && isNumber(countStr))
+                {
+                    cents = std::stoi(centsStr);
+                    count = std::stoi(countStr);
+
+                    if (cents > 0 && count > 0)
+                    {
+                        bank->manageBalance(cents, ADD, count);
+                    }
+                }
+                else
+                {
+                    reading = false;
+                }
+            }
+            else
+            {
+                reading = false;
+            }
+        }
     }
     return success;
 }
@@ -165,10 +211,26 @@ void splitString(string s, vector<string> &tokens, string delimeter)
 }
 
 string readInput()
+
 {
     string input;
     std::getline(std::cin, input);
     std::cout << std::endl;
 
     return input;
+}
+
+bool isNumber(string &s)
+{
+    bool isNumber = false;
+    try
+    {
+        std::stoi(s);
+        isNumber = true;
+    }
+    catch (const std::invalid_argument &e)
+    {
+        isNumber = true;
+    }
+    return isNumber;
 }
