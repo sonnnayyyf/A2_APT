@@ -5,6 +5,7 @@ Coin::Coin(Denomination denom, unsigned count)
     this->denom = denom;
     this->count = count;
     this->calcTotal();
+    this->initialized = false;
 }
 
 Coin::~Coin()
@@ -44,4 +45,14 @@ void Coin::minusCount(int count)
         this->count -= count;
     }
     calcTotal();
+}
+
+void Coin::initialize()
+{
+    this->initialized = true;
+}
+
+bool Coin::isInitialized()
+{
+    return this->initialized;
 }

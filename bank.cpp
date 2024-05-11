@@ -64,127 +64,72 @@ Coin *Bank::getCoin(DenomIndex index)
 
 void Bank::manageBalance(unsigned cents, Operation op, int count)
 {
+    Coin *coin = nullptr;
     if (cents == HUNDRED_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[HUNDRED_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[HUNDRED_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[HUNDRED_DOLLAR_INDEX];
     }
     else if (cents == FIFTY_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[FIFTY_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[FIFTY_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[FIFTY_DOLLAR_INDEX];
     }
     else if (cents == TWENTY_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[TWENTY_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[TWENTY_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[TWENTY_DOLLAR_INDEX];
     }
     else if (cents == TEN_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[TEN_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[TEN_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[TEN_DOLLAR_INDEX];
     }
     else if (cents == FIVE_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[FIVE_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[FIVE_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[FIVE_DOLLAR_INDEX];
     }
     else if (cents == TWO_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[TWO_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[TWO_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[TWO_DOLLAR_INDEX];
     }
     else if (cents == ONE_DOLLAR)
     {
-        if (op == ADD)
-        {
-            this->safe[ONE_DOLLAR_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[ONE_DOLLAR_INDEX]->minusCount(count);
-        }
+        coin = this->safe[ONE_DOLLAR_INDEX];
     }
     else if (cents == FIFTY_CENT)
     {
-        if (op == ADD)
-        {
-            this->safe[FIFTY_CENT_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[FIFTY_CENT_INDEX]->minusCount(count);
-        }
+        coin = this->safe[FIFTY_CENT_INDEX];
     }
     else if (cents == TWENTY_CENT)
     {
-        if (op == ADD)
-        {
-            this->safe[TWENTY_CENT_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[TWENTY_CENT_INDEX]->minusCount(count);
-        }
+        coin = this->safe[TWENTY_CENT_INDEX];
     }
     else if (cents == TEN_CENT)
     {
-        if (op == ADD)
-        {
-            this->safe[TEN_CENT_INDEX]->addCount(count);
-        }
-        else if (op == SUBTRACT)
-        {
-            this->safe[TEN_CENT_INDEX]->minusCount(count);
-        }
+        coin = this->safe[TEN_CENT_INDEX];
     }
     else if (cents == FIVE_CENT)
     {
+        coin = this->safe[FIVE_CENT_INDEX];
+    }
+    else
+    {
+        Helper::printInvalidInput("Denomination does not exist.");
+    }
+
+    if (coin->isInitialized() == false)
+    {
         if (op == ADD)
         {
-            this->safe[FIVE_CENT_INDEX]->addCount(count);
+            coin->addCount(count);
         }
         else if (op == SUBTRACT)
         {
-            this->safe[FIVE_CENT_INDEX]->minusCount(count);
+            coin->minusCount(count);
         }
     }
+    else
+    {
+        Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
+    }
+
     this->calcTotal();
 }
 

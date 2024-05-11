@@ -29,7 +29,7 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
                     cents = std::stoi(centsStr);
                     count = std::stoi(countStr);
 
-                    if (cents > 0 && count > 0)
+                    if (cents >= 0 && count >= 0)
                     {
                         bank->manageBalance(cents, ADD, count);
                         success = true;

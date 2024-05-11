@@ -2,6 +2,7 @@
 #define BANK_H
 #include "coin.h"
 #include "node.h"
+#include "helper.h"
 
 enum DenomIndex
 {

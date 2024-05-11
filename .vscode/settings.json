@@ -49,5 +49,8 @@
         "streambuf": "cpp",
         "typeinfo": "cpp",
         "optional": "cpp"
-    }
+    },
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ]
 }

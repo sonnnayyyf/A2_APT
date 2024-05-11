@@ -102,12 +102,12 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        Helper::printInvalidInput();
+                        Helper::printInvalidInput("Choice must be between 1-7.");
                     }
                 }
                 else
                 {
-                    Helper::printInvalidInput();
+                    Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
                 cout << mainMenu;
@@ -117,12 +117,12 @@ int main(int argc, char **argv)
             {
                 cout << endl;
                 cout << endl;
-                cout << "End Of File character inputted" << endl;
+                Helper::printInvalidInput("End Of File character inputted.");
             }
         }
         else
         {
-            cout << "Files could not be loaded. Aborting Program" << endl;
+            Helper::printInvalidInput("Files could not be loaded. Aborting Program.");
         }
         delete list;
         delete bank;
