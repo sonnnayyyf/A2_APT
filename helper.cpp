@@ -38,9 +38,9 @@ void Helper::splitString(string s, vector<string> &tokens, string delimeter)
     delete[] _s;
 }
 
-void Helper::printInvalidInput()
+void Helper::printInvalidInput(string str)
 {
-    cout << "Invalid input!" << endl;
+    cout << "Invalid input!" << str << endl;
 }
 
 
