@@ -2,6 +2,8 @@
 
 using std::string;
 using std::vector;
+using std::cout;
+using std::endl;
 
 Helper::Helper() {}
 
@@ -35,6 +37,13 @@ void Helper::splitString(string s, vector<string> &tokens, string delimeter)
     }
     delete[] _s;
 }
+
+void Helper::printInvalidInput()
+{
+    cout << "Invalid input!" << endl;
+}
+
+
 
 // string Helper::readInput()
 // {

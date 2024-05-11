@@ -20,6 +20,8 @@ public:
 
     static void splitString(std::string s, std::vector<std::string> &tokens, std::string delimeter);
 
+    static void printInvalidInput();
+    
     // static string readInput();
 };
 #endif // HELPER_H
