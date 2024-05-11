@@ -50,6 +50,8 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
     {
         cout << "File could not be opened" << endl;
     }
+    // closing file
+    inputFile.close();
     return success;
 }
 
@@ -158,12 +160,7 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
 
     // If any of the validation checks fail return false
     // If all checks pass and data is read return true
+    // Closing file
+    inputFile.close();
     return success;
-}
-
-void FileLoader::enterFoodData(string foodsFile, LinkedList *list){
-
-}
-void FileLoader::enterCoinData(string coinsFile, Bank* bank){
-    
 }
