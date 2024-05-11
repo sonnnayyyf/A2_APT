@@ -24,7 +24,7 @@ public:
     void removeBack();
 
     void printItems();
-
+    Node* getHead();
 private:
     // the beginning of the list
     Node *head;

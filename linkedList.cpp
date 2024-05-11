@@ -159,6 +159,11 @@ void LinkedList::removeFront()
     delete curr;
 }
 
+Node* LinkedList::getHead(){
+    Node *curr = this->head;
+    return curr;
+}
+
 void LinkedList::printItems()
 {
     Node *curr = this->head;

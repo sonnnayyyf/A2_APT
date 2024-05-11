@@ -51,7 +51,7 @@ public:
     ~FoodItem();
 
     void printItem();
-
+    std::string writeItem();
     // the unique id for this food item
     std::string id;
 

@@ -50,6 +50,8 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
     {
         cout << "File could not be opened" << endl;
     }
+    // closing file
+    inputFile.close();
     return success;
 }
 
@@ -158,12 +160,25 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
 
     // If any of the validation checks fail return false
     // If all checks pass and data is read return true
+    // Closing file
+    inputFile.close();
     return success;
 }
 
 void FileLoader::enterFoodData(string foodsFile, LinkedList *list){
+    ofstream inputFile(foodsFile);
+    Node *curr = list->getHead();
+    while (curr != nullptr)
+    {
+        inputFile << curr->foodItem->writeItem() << endl;
+        curr = curr->next;
+    }
 
 }
 void FileLoader::enterCoinData(string coinsFile, Bank* bank){
-    
+    ofstream inputFile(coinsFile);
+    for(int i = HUNDRED_DOLLAR_INDEX; i != LAST ; i++){
+        Coin *current_coin = bank->getCoin(static_cast<DenomIndex>(i));
+        inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
+    }
 }

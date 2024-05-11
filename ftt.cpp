@@ -24,6 +24,17 @@ using std::vector;
  **/
 int main(int argc, char **argv)
 {
+    string mainMenu = "Main Menu:\n";
+    mainMenu += "   1. Display Meal Options\n";
+    mainMenu += "   2. Purchase Meal\n";
+    mainMenu += "   3. Save and Exit\n";
+    mainMenu += "Adminstrator-Only Menu:\n";
+    mainMenu += "   4. Add Food\n";
+    mainMenu += "   5. Remove Food\n";
+    mainMenu += "   6. Display Balance\n";
+    mainMenu += "   7. Abort Program\n";
+    mainMenu += "Select your option (1-7) : ";
+
     /* validate command line arguments */
     // TODO
     if (argc != EXPECTED_ARGUMENTS)
@@ -41,16 +52,82 @@ int main(int argc, char **argv)
 
         if (fileLoader.loadFoodData(foodsFile, list) && fileLoader.loadCoinData(coinsFile, bank))
         {
-            list->printItems();
-            bank->displayBalance();
+            bool menuRunning = true;
+            cout << mainMenu;
+            string input = "";
 
-            ofstream inputFile(foodsFile);
-            inputFile << "steiner" << endl;
+            while (menuRunning && std::getline(std::cin, input))
+            {
+                cout << endl;
+
+                // Validate input 1 to 7
+                // First check if it is a number
+                if (Helper::isNumber(input))
+                {
+                    int choice = std::stoi(input);
+
+                    // Now check if number between 1-7
+                    if (choice > 0 && choice < 8)
+                    {
+                        if (choice == 1)
+                        {
+                            list->printItems();
+                        }
+                        else if (choice == 2)
+                        {
+                            // TODO
+                        }
+                        else if (choice == 3)
+                        {
+                            // TODO
+                            fileLoader.enterFoodData(foodsFile, list);
+                            fileLoader.enterCoinData(coinsFile, bank);
+                        }
+                        else if (choice == 4)
+                        {
+                            // TODO
+                        }
+                        else if (choice == 5)
+                        {
+                            // TODO
+                        }
+                        else if (choice == 6)
+                        {
+                            bank->displayBalance();
+                        }
+                        else if (choice == 7)
+                        {
+                            // TODO
+                        }
+                    }
+                    else
+                    {
+                        cout << "Invalid input. Choice must be between options 1-7" << endl;
+                    }
+                }
+                else
+                {
+                    cout << "Invalid input. You must choose a number between 1-7" << endl;
+                }
+                cout << endl;
+                cout << mainMenu;
+            }
+
+            if (std::cin.eof())
+            {
+                cout << endl;
+                cout << "End Of File character inputted" << endl;
+            }
         }
         else
         {
             cout << "Files could not be loaded. Aborting Program" << endl;
         }
+        
+        
+        delete list;
+        delete bank;
+        
     }
 
     return EXIT_SUCCESS;

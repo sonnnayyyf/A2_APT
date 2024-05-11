@@ -75,6 +75,34 @@ void FoodItem::printItem()
     }
 }
 
+std::string FoodItem::writeItem()
+{
+    std::string itemline;
+    itemline += this->id + "|";
+    itemline += this->name + "|";
+    itemline += this->description+ "|";
+
+
+    // For Debugging purposes
+    // cout << this->description << "|";
+
+    unsigned dollars = this->price->dollars;
+    unsigned cents = this->price->cents;
+
+    itemline += dollars + ".";
+    
+
+    if (cents < 10)
+    {
+        itemline += "0" + cents;
+    }
+    else
+    {
+        itemline += cents;
+    }
+    return itemline;
+}
+
 Node::Node()
 {
     this->foodItem = nullptr;
