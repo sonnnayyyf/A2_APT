@@ -34,21 +34,35 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
                         bank->manageBalance(cents, ADD, count);
                         success = true;
                     }
+                    else
+                    {
+                        Helper::printInvalidInput("Denom and count inputs must be greater than zero.");
+                        reading = false;
+                    }
                 }
                 else
                 {
+                    Helper::printInvalidInput("Denom and count inputs must be numbers.");
                     reading = false;
                 }
             }
             else
             {
+                Helper::printInvalidInput(
+                    "Input is not correctly formatted to read coins. Correct format is D,C D for denomination and C for count.");
                 reading = false;
             }
+        }
+        if (std::cin.eof())
+        {
+            cout << endl;
+            cout << endl;
+            cout << "End Of File character inputted" << endl;
         }
     }
     else
     {
-        cout << "File could not be opened" << endl;
+        Helper::printInvalidInput("File not found or could not be opened.");
     }
     // closing file
     inputFile.close();
@@ -115,31 +129,31 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
                                 }
                                 else
                                 {
-                                    cout << "Invalid Input. Item already exists in menu" << endl;
+                                    Helper::printInvalidInput("Food item with input ID already exists in the system.");
                                     reading = false;
                                 }
                             }
                             else
                             {
-                                cout << "Price entered must be greater than or equal to zero" << endl;
+                                Helper::printInvalidInput("Price entered must be greater than or equal to zero.");
                                 reading = false;
                             }
                         }
                         else
                         {
-                            cout << "Price read is not a number" << endl;
+                            Helper::printInvalidInput("Price input must be a number.");
                             reading = false;
                         }
                     }
                     else
                     {
-                        cout << "Price needs to be in the format D.C where D is dollars and C is cents" << endl;
+                        Helper::printInvalidInput("Price written in incorrect format. The correct format should be DD.CC where DD is dollars and CC is cents.");
                         reading = false;
                     }
                 }
                 else
                 {
-                    cout << "Incorrect food data length" << endl;
+                    Helper::printInvalidInput("File details exceed max length.");
                     cout << "ID max length: " << IDLEN << endl;
                     cout << "Name max length: " << NAMELEN << endl;
                     cout << "Description max length: " << DESCLEN << endl;
@@ -148,14 +162,20 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
             }
             else
             {
-                cout << "Missing food data" << endl;
-                reading = false;
+                Helper::printInvalidInput("File missing details or details are not written in the correct format.");
             }
+        }
+
+        if (std::cin.eof())
+        {
+            cout << endl;
+            cout << endl;
+            cout << "End Of File character inputted" << endl;
         }
     }
     else
     {
-        cout << "File could not be opened" << endl;
+        Helper::printInvalidInput("File not found or could not be opened.");
     }
 
     // If any of the validation checks fail return false

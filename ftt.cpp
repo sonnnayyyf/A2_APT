@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     // TODO
     if (argc != EXPECTED_ARGUMENTS)
     {
-        cout << "Invalid number of command line arguments given!" << endl;
+        Helper::printInvalidInput("Incorrect number of arguments entered.");
     }
     else
     {

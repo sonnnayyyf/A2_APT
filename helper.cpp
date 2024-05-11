@@ -1,9 +1,9 @@
 #include "helper.h"
 
-using std::string;
-using std::vector;
 using std::cout;
 using std::endl;
+using std::string;
+using std::vector;
 
 Helper::Helper() {}
 
@@ -40,10 +40,8 @@ void Helper::splitString(string s, vector<string> &tokens, string delimeter)
 
 void Helper::printInvalidInput(string str)
 {
-    cout << "Invalid input!" << str << endl;
+    cout << "Invalid input! " << str << endl;
 }
-
-
 
 // string Helper::readInput()
 // {
