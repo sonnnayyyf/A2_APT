@@ -15,7 +15,7 @@ bool Helper::isNumber(string s)
     }
     catch (const std::invalid_argument &e)
     {
-        isNumber = false;
+        isNumber = true;
     }
     return isNumber;
 }
@@ -35,12 +35,3 @@ void Helper::splitString(string s, vector<string> &tokens, string delimeter)
     }
     delete[] _s;
 }
-
-// string Helper::readInput()
-// {
-//     string input;
-//     std::getline(std::cin, input);
-//     std::cout << std::endl;
-
-//     return input;
-// }
