@@ -44,8 +44,7 @@ int main(int argc, char **argv)
             list->printItems();
             bank->displayBalance();
 
-            ofstream inputFile(foodsFile);
-            inputFile << "steiner" << endl;
+            
         }
         else
         {
