@@ -1,4 +1,4 @@
-#include "Bank.h"
+#include "bank.h"
 #include <iostream>
 #include <iomanip>
 

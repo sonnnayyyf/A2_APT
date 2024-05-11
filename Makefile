@@ -5,7 +5,7 @@ all: ftt
 clean:
 	rm -rf ftt *.o *.dSYM
 
-ftt: Coin.o Node.o LinkedList.o ftt.o Bank.o
+ftt: coin.o node.o linkedList.o ftt.o bank.o helper.o fileLoader.o
 	g++ -Wall -Werror -std=c++14 -g -O -o $@ $^
 
 %.o: %.cpp

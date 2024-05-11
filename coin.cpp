@@ -1,4 +1,4 @@
-#include "Coin.h"
+#include "coin.h"
 
 Coin::Coin(Denomination denom, unsigned count)
 {

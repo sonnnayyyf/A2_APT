@@ -3,7 +3,7 @@
 #include <string>
 #include <iomanip>
 #include <iostream>
-#include "Coin.h"
+#include "coin.h"
 
 // The length of the id string not counting the nul terminator
 #define IDLEN 5

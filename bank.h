@@ -1,7 +1,7 @@
 #ifndef BANK_H
 #define BANK_H
-#include "Coin.h"
-#include "Node.h"
+#include "coin.h"
+#include "node.h"
 
 enum DenomIndex
 {
