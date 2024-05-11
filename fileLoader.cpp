@@ -81,6 +81,7 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
 
     if (inputFile.is_open())
     {
+
         while (getline(inputFile, foodItem) && reading && !inputFile.eof())
         {
             std::vector<std::string> token = {};
@@ -131,24 +132,28 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
                                 {
                                     Helper::printInvalidInput("Food item with input ID already exists in the system.");
                                     reading = false;
+                                    success = false;
                                 }
                             }
                             else
                             {
                                 Helper::printInvalidInput("Price entered must be greater than or equal to zero.");
                                 reading = false;
+                                success = false;
                             }
                         }
                         else
                         {
                             Helper::printInvalidInput("Price input must be a number.");
                             reading = false;
+                            success = false;
                         }
                     }
                     else
                     {
                         Helper::printInvalidInput("Price written in incorrect format. The correct format should be DD.CC where DD is dollars and CC is cents.");
                         reading = false;
+                        success = false;
                     }
                 }
                 else
@@ -158,11 +163,14 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
                     cout << "Name max length: " << NAMELEN << endl;
                     cout << "Description max length: " << DESCLEN << endl;
                     reading = false;
+                    success = false;
                 }
             }
             else
             {
                 Helper::printInvalidInput("File missing details or details are not written in the correct format.");
+                reading = false;
+                success = false;
             }
         }
 
@@ -171,6 +179,7 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
             cout << endl;
             cout << endl;
             cout << "End Of File character inputted" << endl;
+            success = false;
         }
     }
     else

@@ -110,7 +110,11 @@ int main(int argc, char **argv)
                     Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
-                cout << mainMenu;
+
+                if (menuRunning != false)
+                {
+                    cout << mainMenu;
+                }
             }
 
             if (std::cin.eof())
