@@ -6,6 +6,7 @@
 #include "bank.h"
 #include "string.h"
 #include "fileLoader.h"
+#include "helper.h"
 
 #define EXPECTED_ARGUMENTS 3
 
@@ -101,12 +102,12 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        cout << "Invalid input. Choice must be between options 1-7" << endl;
+                        Helper::printInvalidInput();
                     }
                 }
                 else
                 {
-                    cout << "Invalid input. You must choose a number between 1-7" << endl;
+                    Helper::printInvalidInput();
                 }
                 cout << endl;
                 cout << mainMenu;
