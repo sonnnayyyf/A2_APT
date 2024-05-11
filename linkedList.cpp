@@ -1,10 +1,12 @@
 #include "linkedList.h"
 #include <iostream>
+// #include <string>
 
 using std::cout;
 using std::endl;
 using std::left;
 using std::setw;
+using std::string;
 
 LinkedList::LinkedList()
 {
@@ -159,6 +161,43 @@ void LinkedList::removeFront()
     delete curr;
 }
 
+bool LinkedList::removeFood()
+{
+    bool success = false;
+    bool removing = true;
+    string input = "";
+    cout << "Enter the food id of the food to remove from the menu: ";
+
+    while (removing && std::getline(std::cin, input))
+    {
+        cout << endl;
+        FoodItem *item = this->get(input);
+        if (item != nullptr)
+        {
+            item->printRemove();
+            cout << endl;
+            this->remove(input);
+            success = true;
+            removing = false;
+        }
+        else
+        {
+            cout << "Item with entered id does not exist. Please try again." << endl;
+            cout << "Enter the food id of the food to remove from the menu: ";
+        }
+    }
+
+    if (std::cin.eof())
+    {
+        cout << endl;
+        cout << endl;
+        cout << "End Of File character inputted" << endl;
+    }
+
+    return success;
+}
+
+// Prints menu items
 void LinkedList::printItems()
 {
     Node *curr = this->head;

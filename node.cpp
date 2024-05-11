@@ -75,6 +75,11 @@ void FoodItem::printItem()
     }
 }
 
+void FoodItem::printRemove()
+{
+    cout << "\"" << this->id << " - " << this->name << " - " << this->description << "\" " << "has been removed from the system.";
+}
+
 Node::Node()
 {
     this->foodItem = nullptr;

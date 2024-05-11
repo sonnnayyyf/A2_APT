@@ -88,6 +88,7 @@ int main(int argc, char **argv)
                         else if (choice == 5)
                         {
                             // TODO
+                            list->removeFood();
                         }
                         else if (choice == 6)
                         {
@@ -113,6 +114,7 @@ int main(int argc, char **argv)
 
             if (std::cin.eof())
             {
+                cout << endl;
                 cout << endl;
                 cout << "End Of File character inputted" << endl;
             }
