@@ -23,6 +23,8 @@ class FileLoader
 public:
     bool loadCoinData(string coinsFile, Bank *bank);
     bool loadFoodData(string foodsFile, LinkedList *list);
+    void enterFoodData(string foodsFile, LinkedList *list);
+    void enterCoinData(string coinsFile, Bank *bank);
 };
 
 #endif // FILEREADER_H

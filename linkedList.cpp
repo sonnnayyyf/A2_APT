@@ -161,6 +161,11 @@ void LinkedList::removeFront()
     delete curr;
 }
 
+Node* LinkedList::getHead(){
+    Node *curr = this->head;
+    return curr;
+}
+
 bool LinkedList::removeFood()
 {
     bool success = false;

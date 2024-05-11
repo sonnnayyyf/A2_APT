@@ -62,6 +62,10 @@ Coin *Bank::getCoin(DenomIndex index)
     return this->safe[index];
 }
 
+Coin *Bank::getCoin(int index){
+    return this->safe[index];
+}
+
 void Bank::manageBalance(unsigned cents, Operation op, int count)
 {
     Coin *coin = nullptr;

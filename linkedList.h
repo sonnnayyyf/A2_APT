@@ -25,7 +25,7 @@ public:
     bool removeFood();
 
     void printItems();
-
+    Node* getHead();
 private:
     // the beginning of the list
     Node *head;

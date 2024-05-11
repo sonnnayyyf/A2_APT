@@ -81,6 +81,9 @@ int main(int argc, char **argv)
                         else if (choice == 3)
                         {
                             // TODO
+                            fileLoader.enterFoodData(foodsFile, list);
+                            fileLoader.enterCoinData(coinsFile, bank);
+                            menuRunning = false;
                         }
                         else if (choice == 4)
                         {
@@ -110,11 +113,7 @@ int main(int argc, char **argv)
                     Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
-
-                if (menuRunning != false)
-                {
-                    cout << mainMenu;
-                }
+                cout << mainMenu;
             }
 
             if (std::cin.eof())

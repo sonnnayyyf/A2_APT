@@ -20,7 +20,7 @@ public:
 
     static void splitString(std::string s, std::vector<std::string> &tokens, std::string delimeter);
 
-    static void printInvalidInput(std::string str);
+    static void printInvalidInput(string str);
 
     // static string readInput();
 };
