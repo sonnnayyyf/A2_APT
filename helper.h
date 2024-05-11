@@ -19,5 +19,7 @@ public:
     static bool isNumber(std::string s);
 
     static void splitString(std::string s, std::vector<std::string> &tokens, std::string delimeter);
+
+    // static string readInput();
 };
 #endif // HELPER_H
