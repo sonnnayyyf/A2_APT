@@ -41,13 +41,13 @@ FoodItem *LinkedList::get(std::string FoodID)
     FoodItem *retItem = nullptr;
 
     Node *curr = this->head;
-    std::cout << this->head << std::endl;
     while (curr != nullptr)
     {
         if (curr->foodItem->id == FoodID)
         {
             retItem = curr->foodItem;
         }
+        curr = curr->next;
     }
     return retItem;
 }

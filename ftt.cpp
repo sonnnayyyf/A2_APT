@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     // TODO
     if (argc != EXPECTED_ARGUMENTS)
     {
-        cout << "Invalid number of commnad line arguments given!" << endl;
+        cout << "Invalid number of command line arguments given!" << endl;
     }
     else
     {
@@ -52,3 +52,6 @@ int main(int argc, char **argv)
 
     return EXIT_SUCCESS;
 }
+
+// Compiling terminal code
+// g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp
