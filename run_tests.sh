@@ -89,13 +89,13 @@ run_test "./tests/input9.txt" "coins.dat" "./tests/noinput.txt" "./tests/expecte
 # Menu that's displayed when everything goes correctly
 # and when its written back to the file
 # NEED TO BE IMPLEMENTED
-# run_test "foods.dat" "coins.dat" "./tests/input10.txt" "./tests/expected10.txt" "./tests/output10.txt" 10
-# diff -w -y "./tests/expected_food" "./foods.dat"
+run_test "./tests/actual_food.dat" "./tests/actual_coins.dat" "./tests/input10.txt" "./tests/expected10.txt" "./tests/output10.txt" 10
+diff -w -y "./tests/expected_food" "./tests/actual_food.dat"
 
 # Test 11
 
 
-
+ 
 
 
 
