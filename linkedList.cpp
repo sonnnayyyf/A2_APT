@@ -7,6 +7,8 @@ using std::endl;
 using std::left;
 using std::setw;
 using std::string;
+using std::cin;
+using std::vector;
 
 LinkedList::LinkedList()
 {
@@ -221,4 +223,51 @@ void LinkedList::printItems()
         curr = curr->next;
     }
     cout << endl;
+}
+
+void LinkedList::addFood()
+{
+    string id;
+    if (this->count < 9 ){
+        id = "F000";
+    }
+    else{
+        id = "F00";
+    }
+    cout<< "The id for the new food will be "<< id << this->count+1 << endl;
+    cout << "Enter the name of the food: ";
+    string name= Helper::readInput();
+    
+    while (name.length() > NAMELEN){
+        cout << "Name is too long, please enter a name with less than " << NAMELEN << " characters: ";
+        cin >> name;
+    }
+
+    cout << "Enter the description of the food: ";
+    string description= Helper::readInput();
+    while (description.length() > DESCLEN){
+        cout << "Description is too long, please enter a description with less than " << DESCLEN << " characters: ";
+        cin >> description;
+    }
+    cout << "Enter the price of the food: ";
+    string dollars = Helper::readInput();
+    vector<string> split;
+    //split the string into dollars and cents
+    Helper::splitString(dollars,split, ".");
+   
+    //check if the price is valid
+    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1])){
+        cout << "Not a valid price, please enter a valid price: ";
+        dollars = Helper::readInput();
+        Helper::splitString(dollars,split, ".");
+    }
+    // create new food item
+    FoodItem *temp = new FoodItem();
+    temp->id = id + std::to_string(this->count+1);
+    temp->name = name;
+    temp->description = description;
+    temp->price->dollars = stoi(split[0]);
+    temp->price->cents = stoi(split[1]);
+    this->addBack(temp);
+    cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
 }

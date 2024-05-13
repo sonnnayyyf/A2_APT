@@ -43,11 +43,11 @@ void Helper::printInvalidInput(string str)
     cout << "Invalid input! " << str << endl;
 }
 
-// string Helper::readInput()
-// {
-//     string input;
-//     std::getline(std::cin, input);
-//     std::cout << std::endl;
+string Helper::readInput()
+{
+    string input;
+    std::getline(std::cin, input);
+    std::cout << std::endl;
 
-//     return input;
-// }
+    return input;
+}
