@@ -2,10 +2,12 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "linkedList.h"
 #include "bank.h"
 #include "string.h"
 #include "fileLoader.h"
+#include "helper.h"
 
 #define EXPECTED_ARGUMENTS 3
 
@@ -22,6 +24,9 @@ using std::vector;
  * data, display the main menu, and handles the processing of options.
  * Make sure free memory and close all files before exiting the program.
  **/
+
+void pickMeal(LinkedList * list, Bank *bank);
+
 int main(int argc, char **argv)
 {
     string mainMenu = "Main Menu:\n";
@@ -39,7 +44,7 @@ int main(int argc, char **argv)
     // TODO
     if (argc != EXPECTED_ARGUMENTS)
     {
-        cout << "Invalid number of command line arguments given!" << endl;
+        Helper::printInvalidInput("Incorrect number of arguments entered.");
     }
     else
     {
@@ -76,12 +81,14 @@ int main(int argc, char **argv)
                         else if (choice == 2)
                         {
                             // TODO
+                            pickMeal(list, bank);
                         }
                         else if (choice == 3)
                         {
                             // TODO
                             fileLoader.enterFoodData(foodsFile, list);
                             fileLoader.enterCoinData(coinsFile, bank);
+                            menuRunning = false;
                         }
                         else if (choice == 4)
                         {
@@ -90,6 +97,7 @@ int main(int argc, char **argv)
                         else if (choice == 5)
                         {
                             // TODO
+                            list->removeFood();
                         }
                         else if (choice == 6)
                         {
@@ -102,12 +110,12 @@ int main(int argc, char **argv)
                     }
                     else
                     {
-                        cout << "Invalid input. Choice must be between options 1-7" << endl;
+                        Helper::printInvalidInput("Choice must be between 1-7.");
                     }
                 }
                 else
                 {
-                    cout << "Invalid input. You must choose a number between 1-7" << endl;
+                    Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
                 cout << mainMenu;
@@ -116,22 +124,222 @@ int main(int argc, char **argv)
             if (std::cin.eof())
             {
                 cout << endl;
-                cout << "End Of File character inputted" << endl;
+                cout << endl;
+                Helper::printInvalidInput("End Of File character inputted.");
             }
         }
         else
         {
-            cout << "Files could not be loaded. Aborting Program" << endl;
+            Helper::printInvalidInput("Files could not be loaded. Aborting Program.");
         }
-        
-        
         delete list;
         delete bank;
-        
     }
 
     return EXIT_SUCCESS;
 }
 
+bool is_valid_bill(int bill){
+    bool bill_found = false;
+    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    for(int i = 0; i < 11; i++){
+        if(valid_bills[i] == bill){bill_found = true;}
+    }
+    return bill_found;
+}
+
+bool refund_possible(int Amount, int Index=0, Bank* bank)
+{
+    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    if (Amount == 0)
+        return true;
+    if (Index >= NUM_DENOMS)
+        return false;
+    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
+    for (int i = Range; i >= 0; i--)
+    {
+        int RemainingAmount = Amount - (i * valid_bills[Index]);
+        bool result = refund_possible(RemainingAmount, Index + 1);
+        if (result == true)
+        {
+            return true;
+        }    
+    }
+    return false;
+}
+
+bool refund(int Amount, int Index=0, Bank* bank)
+{
+    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    if (Amount == 0)
+        return true;
+    if (Index >= NUM_DENOMS)
+        return false;
+    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
+    for (int i = Range; i >= 0; i--)
+    {
+        int RemainingAmount = Amount - (i * valid_bills[Index]);
+        bool result = refund_possible(RemainingAmount, Index + 1);
+        if (result == true)
+        {
+            while(i > 0){
+                if(valid_bills[Index] < 100){
+                    cout << valid_bills[Index];
+                    cout << "c ";
+                }
+                else{
+                    cout << "$";
+                    cout << valid_bills[Index] / 100 ;
+                    cout << " ";
+                }
+                i--;
+            }
+            return true;
+        }    
+    }
+    return false;
+}
+
+void cancel_purchase(vector<int> paid_list, Bank* bank){
+    for ( int i = 0; i< paid_list.size(); i++){
+        DenomIndex index;
+            if(payment == FIVE_CENT){
+                index = FIVE_CENT_INDEX; 
+            }
+            else if(payment == TEN_CENT){
+                index = TEN_CENT_INDEX;
+            }
+            else if(payment == TWENTY_CENT){
+                index = TWENTY_CENT_INDEX;
+            }
+            else if(payment == FIFTY_CENT){
+                index = FIFTY_CENT_INDEX;
+            }
+            else if(payment == ONE_DOLLAR){
+                index = ONE_DOLLAR_INDEX;
+            }
+            else if(payment == TWO_DOLLAR){
+                index = TWO_DOLLAR_INDEX;
+            }
+            else if(payment == FIVE_DOLLAR){
+                index = FIVE_DOLLAR_INDEX;
+            }
+            else if(payment == TEN_DOLLAR){
+                index = TEN_DOLLAR_INDEX;
+            }
+            else if(payment == TWENTY_DOLLAR){
+                index = TWENTY_DOLLAR_INDEX;
+            }
+            else if(payment == FIFTY_DOLLAR){
+                index = FIFTY_DOLLAR_INDEX;
+            }
+            else if(payment == HUNDRED_DOLLAR){
+                index = HUNDRED_DOLLAR_INDEX;
+            }
+            bank->getCoin(index)->addCount(-1);
+    }
+}
+
+void purchase(int dollars, int cents, Bank *bank){
+    vector<int> paid_bills = {};
+    int toPay = dollars * 100 + cents;
+    while (toPay > 0){
+        cout << "You still need to give us $ " + std::to_string(toPay / 100) + ".";
+        if(toPay % 100 > 9){
+            cout << std::to_string(toPay % 100) +":";
+        }
+        else{
+            cout << "0" + std::to_string(toPay % 100) +":";
+        }
+        int payment;
+        cin >> payment;
+        if(cin.eof() || std::to_string(payment) == ""){
+            cout << "Purchase cancelled!\n";
+            cancel_purchase(paid_bills, bank);
+        }
+        else if(!is_valid_bill(payment)){
+            cout << "Error: invalid denomination encountered.\n";
+        }
+        //identify demon +add coin to bank + add coin to paid list
+        else{
+            DenomIndex index;
+            if(payment == FIVE_CENT){
+                index = FIVE_CENT_INDEX; 
+            }
+            else if(payment == TEN_CENT){
+                index = TEN_CENT_INDEX;
+            }
+            else if(payment == TWENTY_CENT){
+                index = TWENTY_CENT_INDEX;
+            }
+            else if(payment == FIFTY_CENT){
+                index = FIFTY_CENT_INDEX;
+            }
+            else if(payment == ONE_DOLLAR){
+                index = ONE_DOLLAR_INDEX;
+            }
+            else if(payment == TWO_DOLLAR){
+                index = TWO_DOLLAR_INDEX;
+            }
+            else if(payment == FIVE_DOLLAR){
+                index = FIVE_DOLLAR_INDEX;
+            }
+            else if(payment == TEN_DOLLAR){
+                index = TEN_DOLLAR_INDEX;
+            }
+            else if(payment == TWENTY_DOLLAR){
+                index = TWENTY_DOLLAR_INDEX;
+            }
+            else if(payment == FIFTY_DOLLAR){
+                index = FIFTY_DOLLAR_INDEX;
+            }
+            else if(payment == HUNDRED_DOLLAR){
+                index = HUNDRED_DOLLAR_INDEX;
+            }
+            bank->getCoin(index)->addCount(1);
+            paid_bills.insert(paid_bills.begin(), payment);
+            toPay -= payment;
+        }
+
+    }
+
+    if (toPay < 0){
+        if(refund_possible(toPay, 0, bank)){
+            cout << "Your change is ";
+            refund(toPay, 0, bank);
+            cout << "\n";
+        }
+        else{
+            cout << "Insufficient change in system. Purchase cancelled.\n";
+            cancel_purchase(paid_bills, bank);
+        }
+    }
+}
+
+void pickMeal(LinkedList *list, Bank *bank){
+    cout << "Purchase Meal:\n";
+    cout << "-------------\n";
+    cout << "Please enter the ID of the food you wish to purchase:\n";
+    bool foodFound = false;
+    string choice;
+    cin >> choice;
+
+    FoodItem *curr = list->get(choice);
+    if (curr != nullptr && curr->onHand > 0)
+    {
+        foodFound = true;
+        cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
+        cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." << std::to_string(curr->price->cents) <<".\n";
+        cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
+        cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
+        purchase(curr->price->dollars, curr->price->cents, bank); 
+    }
+    else {
+        cout << "The ID is invalid or there is no dish left of the ID\n";
+        pickMeal(list, bank);
+        //print error message
+        
+    }
+}
 // Compiling terminal code
 // g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp
