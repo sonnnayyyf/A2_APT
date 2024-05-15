@@ -203,37 +203,37 @@ bool refund(int Amount, int Index=0, Bank* bank)
 void cancel_purchase(vector<int> paid_list, Bank* bank){
     for ( int i = 0; i< paid_list.size(); i++){
         DenomIndex index;
-            if(payment == FIVE_CENT){
+            if(paid_list[i] == FIVE_CENT){
                 index = FIVE_CENT_INDEX; 
             }
-            else if(payment == TEN_CENT){
+            else if(paid_list[i] == TEN_CENT){
                 index = TEN_CENT_INDEX;
             }
-            else if(payment == TWENTY_CENT){
+            else if(paid_list[i] == TWENTY_CENT){
                 index = TWENTY_CENT_INDEX;
             }
-            else if(payment == FIFTY_CENT){
+            else if(paid_list[i] == FIFTY_CENT){
                 index = FIFTY_CENT_INDEX;
             }
-            else if(payment == ONE_DOLLAR){
+            else if(paid_list[i] == ONE_DOLLAR){
                 index = ONE_DOLLAR_INDEX;
             }
-            else if(payment == TWO_DOLLAR){
+            else if(paid_list[i] == TWO_DOLLAR){
                 index = TWO_DOLLAR_INDEX;
             }
-            else if(payment == FIVE_DOLLAR){
+            else if(paid_list[i] == FIVE_DOLLAR){
                 index = FIVE_DOLLAR_INDEX;
             }
-            else if(payment == TEN_DOLLAR){
+            else if(paid_list[i] == TEN_DOLLAR){
                 index = TEN_DOLLAR_INDEX;
             }
-            else if(payment == TWENTY_DOLLAR){
+            else if(paid_list[i] == TWENTY_DOLLAR){
                 index = TWENTY_DOLLAR_INDEX;
             }
-            else if(payment == FIFTY_DOLLAR){
+            else if(paid_list[i] == FIFTY_DOLLAR){
                 index = FIFTY_DOLLAR_INDEX;
             }
-            else if(payment == HUNDRED_DOLLAR){
+            else if(paid_list[i] == HUNDRED_DOLLAR){
                 index = HUNDRED_DOLLAR_INDEX;
             }
             bank->getCoin(index)->addCount(-1);
