@@ -304,9 +304,9 @@ void purchase(int dollars, int cents, Bank *bank){
     }
 
     if (toPay < 0){
-        if(refund_possible(toPay, 0, bank)){
+        if(refund_possible(0 - toPay, 0, bank)){
             cout << "Your change is ";
-            refund(toPay, 0, bank);
+            refund(0 - toPay, 0, bank);
             cout << "\n";
         }
         else{
