@@ -22,7 +22,7 @@ using std::vector;
 /**
  * manages the running of the program, initialises data structures, loads
  * data, display the main menu, and handles the processing of options.
- * Make sure free memory and close all files before exiting the program.
+ * Make sure free memory and close all files before exiting the program..
  **/
 
 void pickMeal(LinkedList * list, Bank *bank);
