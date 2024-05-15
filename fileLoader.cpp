@@ -198,6 +198,7 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
     return success;
 }
 
+
 void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
 {
     ofstream inputFile(foodsFile);
@@ -207,6 +208,7 @@ void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
         inputFile << curr->foodItem->writeItem() << endl;
         curr = curr->next;
     }
+
     inputFile.close();
 }
 void FileLoader::enterCoinData(string coinsFile, Bank *bank)
@@ -219,4 +221,5 @@ void FileLoader::enterCoinData(string coinsFile, Bank *bank)
         inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
     }
     inputFile.close();
+
 }

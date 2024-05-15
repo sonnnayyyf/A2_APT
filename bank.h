@@ -16,7 +16,8 @@ enum DenomIndex
     FIFTY_CENT_INDEX = 7,
     TWENTY_CENT_INDEX = 8,
     TEN_CENT_INDEX = 9,
-    FIVE_CENT_INDEX = 10
+    FIVE_CENT_INDEX = 10,
+    LAST = 11
 };
 
 enum Operation

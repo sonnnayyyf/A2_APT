@@ -168,6 +168,7 @@ Node* LinkedList::getHead(){
     return curr;
 }
 
+
 bool LinkedList::removeFood()
 {
     bool success = false;
@@ -205,6 +206,7 @@ bool LinkedList::removeFood()
 }
 
 // Prints menu items
+
 void LinkedList::printItems()
 {
     Node *curr = this->head;
