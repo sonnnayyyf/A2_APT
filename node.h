@@ -52,6 +52,10 @@ public:
 
     void printItem();
     std::string writeItem();
+
+    void printRemove();
+
+
     // the unique id for this food item
     std::string id;
 

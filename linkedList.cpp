@@ -1,10 +1,14 @@
 #include "linkedList.h"
 #include <iostream>
+// #include <string>
 
 using std::cout;
 using std::endl;
 using std::left;
 using std::setw;
+using std::string;
+using std::cin;
+using std::vector;
 
 LinkedList::LinkedList()
 {
@@ -164,6 +168,45 @@ Node* LinkedList::getHead(){
     return curr;
 }
 
+
+bool LinkedList::removeFood()
+{
+    bool success = false;
+    bool removing = true;
+    string input = "";
+    cout << "Enter the food id of the food to remove from the menu: ";
+
+    while (removing && std::getline(std::cin, input))
+    {
+        cout << endl;
+        FoodItem *item = this->get(input);
+        if (item != nullptr)
+        {
+            item->printRemove();
+            cout << endl;
+            this->remove(input);
+            success = true;
+            removing = false;
+        }
+        else
+        {
+            cout << "Item with entered id does not exist. Please try again." << endl;
+            cout << "Enter the food id of the food to remove from the menu: ";
+        }
+    }
+
+    if (std::cin.eof())
+    {
+        cout << endl;
+        cout << endl;
+        cout << "End Of File character inputted" << endl;
+    }
+
+    return success;
+}
+
+// Prints menu items
+
 void LinkedList::printItems()
 {
     Node *curr = this->head;
@@ -182,4 +225,56 @@ void LinkedList::printItems()
         curr = curr->next;
     }
     cout << endl;
+}
+
+void LinkedList::addFood()
+{
+    // Find the maximum ID assigned so far
+    int maxId = 0;
+    for (Node* node = this->head; node != nullptr; node = node->next) {
+        int idNum = stoi(node->foodItem->id.substr(3));
+        if (idNum > maxId) {
+            maxId = idNum;
+        }
+    }
+
+    // Assign the next ID to the new food item
+    string id = (maxId < 9 ? "F000" : "F00") + std::to_string(maxId + 1);
+    cout << "The id for the new food will be "<< id << endl;
+    cout << endl;
+    cout << "Enter the name of the food: ";
+    string name= Helper::readInput();
+    
+    while (name.length() > NAMELEN){
+        cout << "Name is too long, please enter a name with less than " << NAMELEN << " characters: ";
+        cin >> name;
+    }
+
+    cout << "Enter the description of the food: ";
+    string description= Helper::readInput();
+    while (description.length() > DESCLEN){
+        cout << "Description is too long, please enter a description with less than " << DESCLEN << " characters: ";
+        cin >> description;
+    }
+    cout << "Enter the price of the food: ";
+    string dollars = Helper::readInput();
+    vector<string> split;
+    //split the string into dollars and cents
+    Helper::splitString(dollars,split, ".");
+   
+    //check if the price is valid
+    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1])){
+        cout << "Not a valid price, please enter a valid price: ";
+        dollars = Helper::readInput();
+        Helper::splitString(dollars,split, ".");
+    }
+    // create new food item
+    FoodItem *temp = new FoodItem();
+    temp->id = id;
+    temp->name = name;
+    temp->description = description;
+    temp->price->dollars = stoi(split[0]);
+    temp->price->cents = stoi(split[1]);
+    this->addBack(temp);
+    cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
 }

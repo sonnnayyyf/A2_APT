@@ -1,5 +1,7 @@
 #include "helper.h"
 
+using std::cout;
+using std::endl;
 using std::string;
 using std::vector;
 
@@ -15,7 +17,7 @@ bool Helper::isNumber(string s)
     }
     catch (const std::invalid_argument &e)
     {
-        isNumber = true;
+        isNumber = false;
     }
     return isNumber;
 }
@@ -34,4 +36,18 @@ void Helper::splitString(string s, vector<string> &tokens, string delimeter)
         pch = strtok(NULL, delimeter.c_str());
     }
     delete[] _s;
+}
+
+void Helper::printInvalidInput(string str)
+{
+    cout << "Invalid input! " << str << endl;
+}
+
+string Helper::readInput()
+{
+    string input;
+    std::getline(std::cin, input);
+    std::cout << std::endl;
+
+    return input;
 }

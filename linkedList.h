@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 #include "node.h"
 #include <iomanip>
+#include "helper.h"
 
 class LinkedList
 {
@@ -22,6 +23,8 @@ public:
 
     void removeFront();
     void removeBack();
+    bool removeFood();
+    void addFood();
 
     void printItems();
     Node* getHead();

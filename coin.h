@@ -32,8 +32,10 @@ public:
     float getTotal();
     Denomination getDenom();
     unsigned getCount();
+    bool isInitialized();
 
     void calcTotal();
+    void initialize();
     void addCount(int count);
     void minusCount(int count);
 
@@ -41,6 +43,7 @@ private:
     enum Denomination denom;
     float total;
     unsigned count;
+    bool initialized;
 };
 
 #endif // COIN_H

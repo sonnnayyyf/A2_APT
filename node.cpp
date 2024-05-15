@@ -75,6 +75,12 @@ void FoodItem::printItem()
     }
 }
 
+
+void FoodItem::printRemove()
+{
+    cout << "\"" << this->id << " - " << this->name << " - " << this->description << "\" " << "has been removed from the system.";
+}
+
 std::string FoodItem::writeItem()
 {
     std::string itemline;
@@ -89,16 +95,20 @@ std::string FoodItem::writeItem()
     unsigned dollars = this->price->dollars;
     unsigned cents = this->price->cents;
 
-    itemline += dollars + ".";
+
+    itemline += std::to_string(dollars) + ".";
+
     
 
     if (cents < 10)
     {
-        itemline += "0" + cents;
+
+        itemline += "0" + std::to_string(cents);
     }
     else
     {
-        itemline += cents;
+        itemline += std::to_string(cents);
+
     }
     return itemline;
 }

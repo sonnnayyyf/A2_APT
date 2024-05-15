@@ -2,6 +2,7 @@
 #define BANK_H
 #include "coin.h"
 #include "node.h"
+#include "helper.h"
 
 enum DenomIndex
 {
@@ -35,6 +36,7 @@ public:
     void calcTotal();
     float getTotal();
     Coin *getCoin(DenomIndex index);
+    Coin *getCoin(int index);
     void manageBalance(unsigned cents, Operation op, int count);
     void displayBalance();
 

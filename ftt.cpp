@@ -80,23 +80,21 @@ int main(int argc, char **argv)
                         }
                         else if (choice == 2)
                         {
-                            // TODO
                             pickMeal(list, bank);
+                        }
                         }
                         else if (choice == 3)
                         {
-                            // TODO
-                            fileLoader.enterFoodData(foodsFile, list);
-                            fileLoader.enterCoinData(coinsFile, bank);
+                            fileLoader.enterFoodData("foodsTest.dat", list);
+                            fileLoader.enterCoinData("coinsTest.dat", bank);
                             menuRunning = false;
                         }
                         else if (choice == 4)
-                        {
-                            // TODO
+                        {                          
+                            list->addFood();
                         }
                         else if (choice == 5)
                         {
-                            // TODO
                             list->removeFood();
                         }
                         else if (choice == 6)
@@ -118,7 +116,12 @@ int main(int argc, char **argv)
                     Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
-                cout << mainMenu;
+          
+                if (menuRunning != false)
+                {
+                    cout << mainMenu;
+                }
+
             }
 
             if (std::cin.eof())

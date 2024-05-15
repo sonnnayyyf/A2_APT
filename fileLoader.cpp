@@ -29,26 +29,45 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
                     cents = std::stoi(centsStr);
                     count = std::stoi(countStr);
 
-                    if (cents > 0 && count > 0)
+                    if (cents >= 0 && count >= 0)
                     {
                         bank->manageBalance(cents, ADD, count);
                         success = true;
                     }
+                    else
+                    {
+                        Helper::printInvalidInput("Denom and count inputs must be greater than zero.");
+                        reading = false;
+                        success = false;
+                    }
                 }
                 else
                 {
+                    Helper::printInvalidInput("Denom and count inputs must be numbers.");
                     reading = false;
+                    success = false;
                 }
             }
             else
             {
+                Helper::printInvalidInput(
+                    "Input is not correctly formatted to read coins. Correct format is D,C D for denomination and C for count.");
                 reading = false;
+                success = false;
             }
+        }
+        if (std::cin.eof())
+        {
+            cout << endl;
+            cout << endl;
+            cout << "End Of File character inputted" << endl;
+            success = false;
         }
     }
     else
     {
-        cout << "File could not be opened" << endl;
+        Helper::printInvalidInput("File not found or could not be opened.");
+        success = false;
     }
     // closing file
     inputFile.close();
@@ -115,47 +134,61 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
                                 }
                                 else
                                 {
-                                    cout << "Invalid Input. Item already exists in menu" << endl;
+                                    Helper::printInvalidInput("Food item with input ID already exists in the system.");
                                     reading = false;
+                                    success = false;
                                 }
                             }
                             else
                             {
-                                cout << "Price entered must be greater than or equal to zero" << endl;
+                                Helper::printInvalidInput("Price entered must be greater than or equal to zero.");
                                 reading = false;
+                                success = false;
                             }
                         }
                         else
                         {
-                            cout << "Price read is not a number" << endl;
+                            Helper::printInvalidInput("Price input must be a number.");
                             reading = false;
+                            success = false;
                         }
                     }
                     else
                     {
-                        cout << "Price needs to be in the format D.C where D is dollars and C is cents" << endl;
+                        Helper::printInvalidInput("Price written in incorrect format. The correct format should be DD.CC where DD is dollars and CC is cents.");
                         reading = false;
+                        success = false;
                     }
                 }
                 else
                 {
-                    cout << "Incorrect food data length" << endl;
+                    Helper::printInvalidInput("File details exceed max length.");
                     cout << "ID max length: " << IDLEN << endl;
                     cout << "Name max length: " << NAMELEN << endl;
                     cout << "Description max length: " << DESCLEN << endl;
                     reading = false;
+                    success = false;
                 }
             }
             else
             {
-                cout << "Missing food data" << endl;
-                reading = false;
+                Helper::printInvalidInput("File missing details or details are not written in the correct format.");
+                success = false;
             }
+        }
+
+        if (std::cin.eof())
+        {
+            cout << endl;
+            cout << endl;
+            cout << "End Of File character inputted" << endl;
+            success = false;
         }
     }
     else
     {
-        cout << "File could not be opened" << endl;
+        Helper::printInvalidInput("File not found or could not be opened.");
+        success = false;
     }
 
     // If any of the validation checks fail return false
@@ -165,7 +198,9 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
     return success;
 }
 
-void FileLoader::enterFoodData(string foodsFile, LinkedList *list){
+
+void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
+{
     ofstream inputFile(foodsFile);
     Node *curr = list->getHead();
     while (curr != nullptr)
@@ -174,11 +209,17 @@ void FileLoader::enterFoodData(string foodsFile, LinkedList *list){
         curr = curr->next;
     }
 
+    inputFile.close();
 }
-void FileLoader::enterCoinData(string coinsFile, Bank* bank){
+void FileLoader::enterCoinData(string coinsFile, Bank *bank)
+{
     ofstream inputFile(coinsFile);
-    for(int i = HUNDRED_DOLLAR_INDEX; i != LAST ; i++){
-        Coin *current_coin = bank->getCoin(static_cast<DenomIndex>(i));
+    Coin *current_coin = nullptr;
+    for (int i = 0; i < NUM_DENOMS; i++)
+    {
+        current_coin = bank->getCoin(i);
         inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
     }
+    inputFile.close();
+
 }
