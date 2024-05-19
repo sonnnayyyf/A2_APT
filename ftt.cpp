@@ -26,6 +26,12 @@ using std::vector;
  **/
 
 void pickMeal(LinkedList * list, Bank *bank);
+void purchase(int dollars, int cents, Bank *bank);
+void cancel_purchase(vector<int> paid_list, Bank* bank);
+bool refund(unsigned int Amount, int Index, Bank* bank);
+bool refund_possible(unsigned int Amount, int Index, Bank* bank);
+int min(unsigned int a, unsigned int b);
+bool is_valid_bill(int bill);
 
 int main(int argc, char **argv)
 {
@@ -82,7 +88,6 @@ int main(int argc, char **argv)
                         {
                             pickMeal(list, bank);
                         }
-                        }
                         else if (choice == 3)
                         {
                             fileLoader.enterFoodData("foodsTest.dat", list);
@@ -90,11 +95,13 @@ int main(int argc, char **argv)
                             menuRunning = false;
                         }
                         else if (choice == 4)
-                        {                          
+                        {
+                            // TODO
                             list->addFood();
                         }
                         else if (choice == 5)
                         {
+                            // TODO
                             list->removeFood();
                         }
                         else if (choice == 6)
@@ -116,12 +123,11 @@ int main(int argc, char **argv)
                     Helper::printInvalidInput("Choice must be a number between 1-7.");
                 }
                 cout << endl;
-          
+
                 if (menuRunning != false)
                 {
                     cout << mainMenu;
                 }
-
             }
 
             if (std::cin.eof())
@@ -151,9 +157,18 @@ bool is_valid_bill(int bill){
     return bill_found;
 }
 
-bool refund_possible(int Amount, int Index=0, Bank* bank)
+int min(unsigned int a, unsigned int b){
+    if(a > b){
+        return b;
+    }
+    else{
+        return a;
+    }
+}
+
+bool refund_possible(unsigned int Amount, int Index, Bank* bank)
 {
-    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    int valid_bills[NUM_DENOMS]={10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
     if (Amount == 0)
         return true;
     if (Index >= NUM_DENOMS)
@@ -162,7 +177,7 @@ bool refund_possible(int Amount, int Index=0, Bank* bank)
     for (int i = Range; i >= 0; i--)
     {
         int RemainingAmount = Amount - (i * valid_bills[Index]);
-        bool result = refund_possible(RemainingAmount, Index + 1);
+        bool result = refund_possible(RemainingAmount, Index + 1, bank);
         if (result == true)
         {
             return true;
@@ -171,9 +186,9 @@ bool refund_possible(int Amount, int Index=0, Bank* bank)
     return false;
 }
 
-bool refund(int Amount, int Index=0, Bank* bank)
+bool refund(unsigned int Amount, int Index, Bank* bank)
 {
-    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    int valid_bills[NUM_DENOMS]={10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
     if (Amount == 0)
         return true;
     if (Index >= NUM_DENOMS)
@@ -182,10 +197,11 @@ bool refund(int Amount, int Index=0, Bank* bank)
     for (int i = Range; i >= 0; i--)
     {
         int RemainingAmount = Amount - (i * valid_bills[Index]);
-        bool result = refund_possible(RemainingAmount, Index + 1);
-        if (result == true)
+        if (refund(RemainingAmount, Index + 1, bank))
         {
-            while(i > 0){
+            int return_count = i;
+            while(return_count > 0){
+                
                 if(valid_bills[Index] < 100){
                     cout << valid_bills[Index];
                     cout << "c ";
@@ -195,7 +211,7 @@ bool refund(int Amount, int Index=0, Bank* bank)
                     cout << valid_bills[Index] / 100 ;
                     cout << " ";
                 }
-                i--;
+                return_count--;
             }
             return true;
         }    
@@ -204,39 +220,39 @@ bool refund(int Amount, int Index=0, Bank* bank)
 }
 
 void cancel_purchase(vector<int> paid_list, Bank* bank){
-    for ( int i = 0; i< paid_list.size(); i++){
+    for (auto i = paid_list.begin(); i != paid_list.end(); i++){
         DenomIndex index;
-            if(paid_list[i] == FIVE_CENT){
+            if(*i == FIVE_CENT){
                 index = FIVE_CENT_INDEX; 
             }
-            else if(paid_list[i] == TEN_CENT){
+            else if(*i == TEN_CENT){
                 index = TEN_CENT_INDEX;
             }
-            else if(paid_list[i] == TWENTY_CENT){
+            else if(*i == TWENTY_CENT){
                 index = TWENTY_CENT_INDEX;
             }
-            else if(paid_list[i] == FIFTY_CENT){
+            else if(*i == FIFTY_CENT){
                 index = FIFTY_CENT_INDEX;
             }
-            else if(paid_list[i] == ONE_DOLLAR){
+            else if(*i == ONE_DOLLAR){
                 index = ONE_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == TWO_DOLLAR){
+            else if(*i == TWO_DOLLAR){
                 index = TWO_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == FIVE_DOLLAR){
+            else if(*i == FIVE_DOLLAR){
                 index = FIVE_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == TEN_DOLLAR){
+            else if(*i == TEN_DOLLAR){
                 index = TEN_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == TWENTY_DOLLAR){
+            else if(*i == TWENTY_DOLLAR){
                 index = TWENTY_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == FIFTY_DOLLAR){
+            else if(*i == FIFTY_DOLLAR){
                 index = FIFTY_DOLLAR_INDEX;
             }
-            else if(paid_list[i] == HUNDRED_DOLLAR){
+            else{
                 index = HUNDRED_DOLLAR_INDEX;
             }
             bank->getCoin(index)->addCount(-1);
@@ -246,18 +262,20 @@ void cancel_purchase(vector<int> paid_list, Bank* bank){
 void purchase(int dollars, int cents, Bank *bank){
     vector<int> paid_bills = {};
     int toPay = dollars * 100 + cents;
+    
     while (toPay > 0){
         cout << "You still need to give us $ " + std::to_string(toPay / 100) + ".";
         if(toPay % 100 > 9){
-            cout << std::to_string(toPay % 100) +":";
+            cout << std::to_string(toPay % 100) +": ";
         }
         else{
-            cout << "0" + std::to_string(toPay % 100) +":";
+            cout << "0" + std::to_string(toPay % 100) +": ";
         }
         int payment;
         cin >> payment;
-        if(cin.eof() || std::to_string(payment) == ""){
-            cout << "Purchase cancelled!\n";
+        if(std::to_string(payment) == "\n"){
+            cout << endl << "Purchase cancelled!\n";
+            toPay = 0;
             cancel_purchase(paid_bills, bank);
         }
         else if(!is_valid_bill(payment)){
@@ -296,20 +314,20 @@ void purchase(int dollars, int cents, Bank *bank){
             else if(payment == FIFTY_DOLLAR){
                 index = FIFTY_DOLLAR_INDEX;
             }
-            else if(payment == HUNDRED_DOLLAR){
+            else{
                 index = HUNDRED_DOLLAR_INDEX;
             }
             bank->getCoin(index)->addCount(1);
             paid_bills.insert(paid_bills.begin(), payment);
             toPay -= payment;
         }
-
     }
 
-    if (toPay < 0){
-        if(refund_possible(0 - toPay, 0, bank)){
+    toPay = 0 - toPay;
+    if (toPay > 0){
+        if(refund_possible(toPay, 0, bank)){
             cout << "Your change is ";
-            refund(0 - toPay, 0, bank);
+            refund(toPay, 0, bank);
             cout << "\n";
         }
         else{
@@ -322,15 +340,15 @@ void purchase(int dollars, int cents, Bank *bank){
 void pickMeal(LinkedList *list, Bank *bank){
     cout << "Purchase Meal:\n";
     cout << "-------------\n";
-    cout << "Please enter the ID of the food you wish to purchase:\n";
-    bool foodFound = false;
+    cout << "Please enter the ID of the food you wish to purchase: ";
+    // bool foodFound = false;
     string choice;
     cin >> choice;
 
     FoodItem *curr = list->get(choice);
     if (curr != nullptr && curr->onHand > 0)
     {
-        foodFound = true;
+        // foodFound = true;
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
         cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." << std::to_string(curr->price->cents) <<".\n";
         cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
