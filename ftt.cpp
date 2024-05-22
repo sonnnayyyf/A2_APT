@@ -281,7 +281,7 @@ void purchase(int dollars, int cents, Bank *bank){
         
         string input;
         getline(cin, input);
-        cout << "ss" << input << endl;
+
         if(cin.eof() || input.length() == 0){
             cout << endl << "Purchase cancelled!\n";
             toPay = 0;
