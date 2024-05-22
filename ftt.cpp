@@ -356,12 +356,15 @@ void pickMeal(LinkedList *list, Bank *bank){
     getline(cin, choice);
 
     FoodItem *curr = list->get(choice);
+
     
     if(cin.eof()){
         cout << endl << "Purchase cancelled!";
     }
     
     else if (curr != nullptr && curr->onHand > 0)
+
+
     {
         // foodFound = true;
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
