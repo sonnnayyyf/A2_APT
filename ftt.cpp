@@ -356,8 +356,6 @@ void pickMeal(LinkedList *list, Bank *bank){
         cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." << std::to_string(curr->price->cents) <<".\n";
         cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
         cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
-        cin.clear();
-        cin.ignore(10000,'\n');
         purchase(curr->price->dollars, curr->price->cents, bank); 
     }
     else {
