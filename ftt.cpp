@@ -149,9 +149,9 @@ int main(int argc, char **argv)
     return EXIT_SUCCESS;
 }
 
-bool is_valid_bill(int bill){
+bool is_valid_bill(string bill){
     bool bill_found = false;
-    int valid_bills[NUM_DENOMS]={5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000};
+    string valid_bills[NUM_DENOMS]={"5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000"};
     for(int i = 0; i < 11; i++){
         if(valid_bills[i] == bill){bill_found = true;}
     }
@@ -206,11 +206,13 @@ bool refund(unsigned int Amount, int Index, Bank* bank)
                 if(valid_bills[Index] < 100){
                     cout << valid_bills[Index];
                     cout << "c ";
+                    bank->getCoin(Index)->addCount(-1);
                 }
                 else{
                     cout << "$";
                     cout << valid_bills[Index] / 100 ;
                     cout << " ";
+                    bank->getCoin(Index)->addCount(-1);
                 }
                 return_count--;
             }
@@ -263,7 +265,7 @@ void cancel_purchase(vector<int> paid_list, Bank* bank){
 void purchase(int dollars, int cents, Bank *bank){
     vector<int> paid_bills = {};
     int toPay = dollars * 100 + cents;
-    
+    bool first_payment = true;
     while (toPay > 0){
         cout << "You still need to give us $ " + std::to_string(toPay / 100) + ".";
         if(toPay % 100 > 9){
@@ -272,18 +274,26 @@ void purchase(int dollars, int cents, Bank *bank){
         else{
             cout << "0" + std::to_string(toPay % 100) +": ";
         }
-        int payment;
-        cin >> payment;
-        if(std::to_string(payment) == "\n"){
+        
+        if(first_payment){
+            cin.ignore();
+            first_payment = false;
+        }
+        
+        string input;
+        getline(cin, input);
+
+        if(cin.eof() || input.length() == 0){
             cout << endl << "Purchase cancelled!\n";
             toPay = 0;
             cancel_purchase(paid_bills, bank);
         }
-        else if(!is_valid_bill(payment)){
+        else if(is_valid_bill(input) == false || Helper::isNumber(input) == false){
             cout << "Error: invalid denomination encountered.\n";
         }
         //identify demon +add coin to bank + add coin to paid list
         else{
+            int payment = std::stoi(input);
             DenomIndex index;
             if(payment == FIVE_CENT){
                 index = FIVE_CENT_INDEX; 
@@ -344,13 +354,18 @@ void pickMeal(LinkedList *list, Bank *bank){
     cout << "Please enter the ID of the food you wish to purchase: ";
     // bool foodFound = false;
     string choice;
-    cin >> choice;
+    getline(cin, choice);
 
     FoodItem *curr = list->get(choice);
+
+    
     if(cin.eof()){
         cout << endl << "Purchase cancelled!";
     }
-    if (curr != nullptr && curr->onHand > 0)
+    
+    else if (curr != nullptr && curr->onHand > 0)
+
+
     {
         // foodFound = true;
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
