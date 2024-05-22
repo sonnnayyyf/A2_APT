@@ -87,6 +87,7 @@ int main(int argc, char **argv)
                         else if (choice == 2)
                         {
                             pickMeal(list, bank);
+                            cin.ignore(10000, '\n');
                         }
                         else if (choice == 3)
                         {
