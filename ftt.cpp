@@ -346,6 +346,9 @@ void pickMeal(LinkedList *list, Bank *bank){
     cin >> choice;
 
     FoodItem *curr = list->get(choice);
+    if(cin.eof()){
+        cout << endl << "Purchase cancelled!";
+    }
     if (curr != nullptr && curr->onHand > 0)
     {
         // foodFound = true;
