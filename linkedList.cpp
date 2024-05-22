@@ -236,7 +236,8 @@ void LinkedList::addFood()
     else{
         id = "F00";
     }
-    cout<< "The id for the new food will be "<< id << this->count+1 << endl;
+    cout << "The id for the new food will be "<< id << this->count+1 << endl;
+    cout << endl;
     cout << "Enter the name of the food: ";
     string name= Helper::readInput();
     

@@ -1,4 +1,3 @@
-Main Menu:
    1. Display Meal Options
    2. Purchase Meal
    3. Save and Exit
@@ -8,7 +7,8 @@ Adminstrator-Only Menu:
    6. Display Balance
    7. Abort Program
 Select your option (1-7) : 
-The id for the new food will be F0008
+The id for the new food will be F0009
+
 Enter the name of the food: 
 Enter the description of the food: 
 Enter the price of the food: 
@@ -24,14 +24,4 @@ Adminstrator-Only Menu:
    6. Display Balance
    7. Abort Program
 Select your option (1-7) : 
-
-Main Menu:
-   1. Display Meal Options
-   2. Purchase Meal
-   3. Save and Exit
-Adminstrator-Only Menu:
-   4. Add Food
-   5. Remove Food
-   6. Display Balance
-   7. Abort Program
-Select your option (1-7) : 
+Data saved and program exiting.

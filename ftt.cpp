@@ -92,6 +92,7 @@ int main(int argc, char **argv)
                         {
                             fileLoader.enterFoodData("foodsTest.dat", list);
                             fileLoader.enterCoinData("coinsTest.dat", bank);
+                            cout << "Data saved and program exiting." << endl;
                             menuRunning = false;
                         }
                         else if (choice == 4)
