@@ -110,7 +110,8 @@ int main(int argc, char **argv)
                         }
                         else if (choice == 7)
                         {
-                            // TODO
+                            cout << "Aborting Program." << endl;
+                            exit(EXIT_SUCCESS);
                         }
                     }
                     else
