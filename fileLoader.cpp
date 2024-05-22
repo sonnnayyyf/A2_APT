@@ -36,7 +36,7 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
                     }
                     else
                     {
-                        Helper::printInvalidInput("Denom and count inputs must be greater than zero.");
+                        Helper::printInvalidInput("Denom and count inputs must be greater than or equal to zero.");
                         reading = false;
                         success = false;
                     }
@@ -198,7 +198,6 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
     return success;
 }
 
-
 void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
 {
     ofstream inputFile(foodsFile);
@@ -221,5 +220,4 @@ void FileLoader::enterCoinData(string coinsFile, Bank *bank)
         inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
     }
     inputFile.close();
-
 }

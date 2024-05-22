@@ -1,0 +1,2 @@
+Invalid input! Input is not correctly formatted to read coins. Correct format is D,C D for denomination and C for count.
+Invalid input! Files could not be loaded. Aborting Program.
