@@ -40,7 +40,7 @@ void Coin::addCount(int count)
 
 void Coin::minusCount(int count)
 {
-    if (this->count > (unsigned)count)
+    if (this->count >= (unsigned)count)
     {
         this->count -= count;
     }

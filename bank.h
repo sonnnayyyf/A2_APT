@@ -37,7 +37,7 @@ public:
     float getTotal();
     Coin *getCoin(DenomIndex index);
     Coin *getCoin(int index);
-    void manageBalance(unsigned cents, Operation op, int count);
+    bool manageBalance(unsigned cents, Operation op, int count);
     void displayBalance();
 
 private:

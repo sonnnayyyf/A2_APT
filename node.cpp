@@ -57,11 +57,11 @@ void FoodItem::printItem()
 
     if (dollars < 10)
     {
-        cout << "|0" << this->price->dollars << ".";
+        cout << "|$ " << this->price->dollars << ".";
     }
     else
     {
-        cout << "|" << this->price->dollars << ".";
+        cout << "|$" << this->price->dollars << ".";
     }
 
     if (cents < 10)
@@ -71,10 +71,8 @@ void FoodItem::printItem()
     else
     {
         cout << this->price->cents << endl;
-        ;
     }
 }
-
 
 void FoodItem::printRemove()
 {
@@ -86,8 +84,7 @@ std::string FoodItem::writeItem()
     std::string itemline;
     itemline += this->id + "|";
     itemline += this->name + "|";
-    itemline += this->description+ "|";
-
+    itemline += this->description + "|";
 
     // For Debugging purposes
     // cout << this->description << "|";
@@ -95,10 +92,7 @@ std::string FoodItem::writeItem()
     unsigned dollars = this->price->dollars;
     unsigned cents = this->price->cents;
 
-
     itemline += std::to_string(dollars) + ".";
-
-    
 
     if (cents < 10)
     {
@@ -108,7 +102,6 @@ std::string FoodItem::writeItem()
     else
     {
         itemline += std::to_string(cents);
-
     }
     return itemline;
 }

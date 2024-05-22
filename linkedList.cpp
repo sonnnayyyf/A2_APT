@@ -2,12 +2,12 @@
 #include <iostream>
 // #include <string>
 
+using std::cin;
 using std::cout;
 using std::endl;
 using std::left;
 using std::setw;
 using std::string;
-using std::cin;
 using std::vector;
 
 LinkedList::LinkedList()
@@ -163,11 +163,11 @@ void LinkedList::removeFront()
     delete curr;
 }
 
-Node* LinkedList::getHead(){
+Node *LinkedList::getHead()
+{
     Node *curr = this->head;
     return curr;
 }
-
 
 bool LinkedList::removeFood()
 {
@@ -175,31 +175,37 @@ bool LinkedList::removeFood()
     bool removing = true;
     string input = "";
     cout << "Enter the food id of the food to remove from the menu: ";
-
-    while (removing && std::getline(std::cin, input))
+    std::getline(cin >> std::ws, input);
+    input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+    while (removing && !input.empty())
     {
-        cout << endl;
-        FoodItem *item = this->get(input);
-        if (item != nullptr)
+        if (std::cin.eof())
         {
-            item->printRemove();
             cout << endl;
-            this->remove(input);
-            success = true;
+            cout << endl;
+            cout << "End Of File character inputted" << endl;
             removing = false;
         }
         else
         {
-            cout << "Item with entered id does not exist. Please try again." << endl;
-            cout << "Enter the food id of the food to remove from the menu: ";
+            cout << endl;
+            FoodItem *item = this->get(input);
+            if (item != nullptr)
+            {
+                item->printRemove();
+                cout << endl;
+                this->remove(input);
+                success = true;
+                removing = false;
+            }
+            else
+            {
+                cout << "Item with entered id does not exist. Please try again." << endl;
+                cout << "Enter the food id of the food to remove from the menu: ";
+                std::getline(cin >> std::ws, input);
+                input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+            }
         }
-    }
-
-    if (std::cin.eof())
-    {
-        cout << endl;
-        cout << endl;
-        cout << "End Of File character inputted" << endl;
     }
 
     return success;
@@ -230,43 +236,60 @@ void LinkedList::printItems()
 void LinkedList::addFood()
 {
     string id;
-    if (this->count < 9 ){
+    if (this->count < 9)
+    {
         id = "F000";
     }
-    else{
+    else
+    {
         id = "F00";
     }
-    cout << "The id for the new food will be "<< id << this->count+1 << endl;
+
+    cout << "The id for the new food will be " << id << this->count + 1 << endl;
     cout << endl;
     cout << "Enter the name of the food: ";
-    string name= Helper::readInput();
-    
-    while (name.length() > NAMELEN){
+    string name;
+    std::getline(cin, name);
+    name.erase(name.find_last_not_of(" \t\r\n\v\f") + 1);
+
+    while (name.length() > NAMELEN)
+    {
         cout << "Name is too long, please enter a name with less than " << NAMELEN << " characters: ";
-        cin >> name;
+        std::getline(cin >> std::ws, name);
+        name.erase(name.find_last_not_of(" \t\r\n\v\f") + 1);
     }
 
     cout << "Enter the description of the food: ";
-    string description= Helper::readInput();
-    while (description.length() > DESCLEN){
+    string description;
+    std::getline(cin, description);
+    description.erase(description.find_last_not_of(" \t\r\n\v\f") + 1);
+    while (description.length() > DESCLEN)
+    {
         cout << "Description is too long, please enter a description with less than " << DESCLEN << " characters: ";
-        cin >> description;
+        std::getline(cin >> std::ws, description);
+        description.erase(description.find_last_not_of(" \t\r\n\v\f") + 1);
     }
     cout << "Enter the price of the food: ";
-    string dollars = Helper::readInput();
+    string dollars;
+    std::getline(cin, dollars);
+    dollars.erase(dollars.find_last_not_of(" \t\r\n\v\f") + 1);
+
     vector<string> split;
-    //split the string into dollars and cents
-    Helper::splitString(dollars,split, ".");
-   
-    //check if the price is valid
-    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1])){
+    // split the string into dollars and cents
+    Helper::splitString(dollars, split, ".");
+
+    // check if the price is valid
+    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1]))
+    {
         cout << "Not a valid price, please enter a valid price: ";
-        dollars = Helper::readInput();
-        Helper::splitString(dollars,split, ".");
+        std::getline(cin, dollars);
+        dollars.erase(dollars.find_last_not_of(" \t\r\n\v\f") + 1);
+
+        Helper::splitString(dollars, split, ".");
     }
     // create new food item
     FoodItem *temp = new FoodItem();
-    temp->id = id + std::to_string(this->count+1);
+    temp->id = id + std::to_string(this->count + 1);
     temp->name = name;
     temp->description = description;
     temp->price->dollars = stoi(split[0]);

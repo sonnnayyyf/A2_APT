@@ -48,7 +48,6 @@ void Bank::calcTotal()
     for (int i = 0; i < NUM_DENOMS; i++)
     {
         this->total += this->safe[i]->getTotal();
-        ;
     }
 }
 
@@ -62,12 +61,14 @@ Coin *Bank::getCoin(DenomIndex index)
     return this->safe[index];
 }
 
-Coin *Bank::getCoin(int index){
+Coin *Bank::getCoin(int index)
+{
     return this->safe[index];
 }
 
-void Bank::manageBalance(unsigned cents, Operation op, int count)
+bool Bank::manageBalance(unsigned cents, Operation op, int count)
 {
+    bool success = true;
     Coin *coin = nullptr;
     if (cents == HUNDRED_DOLLAR)
     {
@@ -115,30 +116,37 @@ void Bank::manageBalance(unsigned cents, Operation op, int count)
     }
     else
     {
-        Helper::printInvalidInput("Denomination does not exist.");
+        Helper::printInvalidInput("Error: invalid denomination encountered.");
+        success = false;
     }
 
-    if (coin->isInitialized() == false)
+    if (coin != nullptr)
     {
-        if (op == ADD)
+        if (coin->isInitialized() == false)
         {
-            coin->addCount(count);
+            if (op == ADD)
+            {
+                coin->addCount(count);
+            }
+            else if (op == SUBTRACT)
+            {
+                coin->minusCount(count);
+            }
         }
-        else if (op == SUBTRACT)
+        else
         {
-            coin->minusCount(count);
+            Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
+            success = false;
         }
-    }
-    else
-    {
-        Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
     }
 
     this->calcTotal();
+    return success;
 }
 
 void Bank::displayBalance()
 {
+    this->calcTotal();
     std::cout << std::fixed << std::setprecision(2);
     cout << "Balance Summary" << endl;
     cout << "-------------" << endl;
