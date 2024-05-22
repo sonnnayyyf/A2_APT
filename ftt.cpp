@@ -266,7 +266,6 @@ void cancel_purchase(vector<int> paid_list, Bank* bank){
 void purchase(int dollars, int cents, Bank *bank){
     vector<int> paid_bills = {};
     int toPay = dollars * 100 + cents;
-    bool first_payment = true;
     while (toPay > 0){
         cout << "You still need to give us $ " + std::to_string(toPay / 100) + ".";
         if(toPay % 100 > 9){
@@ -276,13 +275,8 @@ void purchase(int dollars, int cents, Bank *bank){
             cout << "0" + std::to_string(toPay % 100) +": ";
         }
         
-        if(first_payment){
-            cin.ignore();
-            first_payment = false;
-        }
-        
         string input;
-        getline(cin, input);
+        cin >> input;
 
         if(cin.eof() || input.length() == 0){
             cout << endl << "Purchase cancelled!\n";
@@ -355,7 +349,7 @@ void pickMeal(LinkedList *list, Bank *bank){
     cout << "Please enter the ID of the food you wish to purchase: ";
     // bool foodFound = false;
     string choice;
-    getline(cin, choice);
+    cin >> choice;
 
     FoodItem *curr = list->get(choice);
 
