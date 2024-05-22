@@ -1,0 +1,2 @@
+Invalid input! Price written in incorrect format. The correct format should be DD.CC where DD is dollars and CC is cents.
+Invalid input! Files could not be loaded. Aborting Program.

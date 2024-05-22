@@ -1,0 +1,2 @@
+F0001|Baklava|Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey|8.50
+F0002|Gnocchi|HELLO|Italian pasta dish made from potato and served with a rich cheese sauce|12.50
