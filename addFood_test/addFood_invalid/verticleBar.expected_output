@@ -1,0 +1,26 @@
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+The id for the new food will be F0009
+
+Enter the name of the food: Name cannot contain the character '|', please enter a name without the character '|': Enter the description of the food: Description cannot contain the character '|', please enter a description without the character '|': Enter the price of the food: Price cannot contain the character '|', please enter a price without the character '|': This food "Fish - Yummi" has now been added to the menu.
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Data saved and program exiting.
+
