@@ -258,6 +258,12 @@ void LinkedList::addFood()
         std::getline(cin >> std::ws, name);
         name.erase(name.find_last_not_of(" \t\r\n\v\f") + 1);
     }
+    while (name.find("|") != string::npos)
+    {
+        cout << "Name cannot contain the character '|', please enter a name without the character '|': ";
+        std::getline(cin >> std::ws, name);
+        name.erase(name.find_last_not_of(" \t\r\n\v\f") + 1);
+    }
 
     cout << "Enter the description of the food: ";
     string description;
@@ -269,6 +275,13 @@ void LinkedList::addFood()
         std::getline(cin >> std::ws, description);
         description.erase(description.find_last_not_of(" \t\r\n\v\f") + 1);
     }
+    while (description.find("|") != string::npos)
+    {
+        cout << "Description cannot contain the character '|', please enter a description without the character '|': ";
+        std::getline(cin >> std::ws, description);
+        description.erase(description.find_last_not_of(" \t\r\n\v\f") + 1);
+    }
+
     cout << "Enter the price of the food: ";
     string dollars;
     std::getline(cin, dollars);
@@ -286,6 +299,12 @@ void LinkedList::addFood()
         dollars.erase(dollars.find_last_not_of(" \t\r\n\v\f") + 1);
 
         Helper::splitString(dollars, split, ".");
+    }
+    while (dollars.find("|") != string::npos)
+    {
+        cout << "Price cannot contain the character '|', please enter a price without the character '|': ";
+        std::getline(cin >> std::ws, dollars);
+        dollars.erase(dollars.find_last_not_of(" \t\r\n\v\f") + 1);
     }
     // create new food item
     FoodItem *temp = new FoodItem();
