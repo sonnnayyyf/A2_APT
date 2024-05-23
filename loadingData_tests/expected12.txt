@@ -1,0 +1,2 @@
+Invalid input! Denom and count inputs must be greater than or equal to zero.
+Invalid input! Files could not be loaded. Aborting Program.

@@ -31,8 +31,18 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
 
                     if (cents >= 0 && count >= 0)
                     {
-                        bank->manageBalance(cents, ADD, count);
-                        success = true;
+
+                        Coin *coin = bank->getCoinByCent(cents);
+                        if (!coin->isInitialized())
+                        {
+                            coin->addCount(count);
+                            coin->initialize();
+                            success = true;
+                        }
+                        else
+                        {
+                            Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
+                        }
                     }
                     else
                     {

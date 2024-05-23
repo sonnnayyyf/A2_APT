@@ -31,6 +31,19 @@ run_test() {
     echo ""
 }
 
+compare_coins() {
+    local expected_output_file="$1"
+    local output_file="$2"
+    local num="$3"
+    if diff -w -y "$expected_output_file" "$output_file" >/dev/null; then
+        echo "Test "$num" coins passed"
+    else
+        echo "Test "$num" coins failed"
+    fi
+    echo ""
+
+}
+
 # The tests below mainly focus only reading food data from a file
 
 # Test 1
@@ -104,6 +117,12 @@ run_test "foods.dat" "./loadingData_tests/input11.txt" "./loadingData_tests/noin
 # Check if price values are greater than or equal to zero
 run_test "foods.dat" "./loadingData_tests/input12.txt" "./loadingData_tests/noinput.txt" "./loadingData_tests/expected12.txt" "./loadingData_tests/output12.txt" 12
 
+# Test 13
+# Checking for duplicate coins entries in data file
+# We handle this by only taking the data from the first one encountered and skip the rest
+run_test "foods.dat" "./loadingData_tests/input13.txt" "./loadingData_tests/commands13.txt" "./loadingData_tests/expected13.txt" "./loadingData_tests/output13.txt" 13
+
+compare_coins "./coinsTest.dat" "./loadingData_tests/expectedCoins13.dat" 13
 
 
  

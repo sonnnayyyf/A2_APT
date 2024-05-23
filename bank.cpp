@@ -66,9 +66,8 @@ Coin *Bank::getCoin(int index)
     return this->safe[index];
 }
 
-bool Bank::manageBalance(unsigned cents, Operation op, int count)
+Coin *Bank::getCoinByCent(unsigned cents)
 {
-    bool success = true;
     Coin *coin = nullptr;
     if (cents == HUNDRED_DOLLAR)
     {
@@ -117,26 +116,27 @@ bool Bank::manageBalance(unsigned cents, Operation op, int count)
     else
     {
         Helper::printInvalidInput("Error: invalid denomination encountered.");
-        success = false;
     }
+    return coin;
+}
+
+bool Bank::manageBalance(unsigned cents, Operation op, int count)
+{
+    bool success = false;
+    Coin *coin = this->getCoinByCent(cents);
 
     if (coin != nullptr)
     {
-        if (coin->isInitialized() == false)
+
+        if (op == ADD)
         {
-            if (op == ADD)
-            {
-                coin->addCount(count);
-            }
-            else if (op == SUBTRACT)
-            {
-                coin->minusCount(count);
-            }
+            coin->addCount(count);
+            success = true;
         }
-        else
+        else if (op == SUBTRACT)
         {
-            Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
-            success = false;
+            coin->minusCount(count);
+            success = true;
         }
     }
 

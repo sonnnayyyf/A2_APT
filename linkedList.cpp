@@ -288,12 +288,11 @@ void LinkedList::addFood()
         Helper::splitString(dollars, split, ".");
     }
     // create new food item
-    FoodItem *temp = new FoodItem();
-    temp->id = id + std::to_string(this->count + 1);
-    temp->name = name;
-    temp->description = description;
-    temp->price->dollars = stoi(split[0]);
-    temp->price->cents = stoi(split[1]);
-    this->addBack(temp);
+    id = id + std::to_string(this->count + 1);
+
+    Price *price = new Price(stoi(split[0]), stoi(split[1]));
+    FoodItem *item = new FoodItem(id, name, description, price, DEFAULT_FOOD_STOCK_LEVEL);
+
+    this->addBack(item);
     cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
 }
