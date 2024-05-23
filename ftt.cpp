@@ -248,54 +248,10 @@ bool refund(unsigned int Amount, int Index, Bank *bank)
 
 void cancel_purchase(vector<int> paid_list, Bank *bank)
 {
-    for (auto i = paid_list.begin(); i != paid_list.end(); i++)
+    unsigned int vecsize = paid_list.size();
+    for (unsigned int i = 0; i < vecsize; i++)
     {
-        DenomIndex index;
-        if (*i == FIVE_CENT)
-        {
-            index = FIVE_CENT_INDEX;
-        }
-        else if (*i == TEN_CENT)
-        {
-            index = TEN_CENT_INDEX;
-        }
-        else if (*i == TWENTY_CENT)
-        {
-            index = TWENTY_CENT_INDEX;
-        }
-        else if (*i == FIFTY_CENT)
-        {
-            index = FIFTY_CENT_INDEX;
-        }
-        else if (*i == ONE_DOLLAR)
-        {
-            index = ONE_DOLLAR_INDEX;
-        }
-        else if (*i == TWO_DOLLAR)
-        {
-            index = TWO_DOLLAR_INDEX;
-        }
-        else if (*i == FIVE_DOLLAR)
-        {
-            index = FIVE_DOLLAR_INDEX;
-        }
-        else if (*i == TEN_DOLLAR)
-        {
-            index = TEN_DOLLAR_INDEX;
-        }
-        else if (*i == TWENTY_DOLLAR)
-        {
-            index = TWENTY_DOLLAR_INDEX;
-        }
-        else if (*i == FIFTY_DOLLAR)
-        {
-            index = FIFTY_DOLLAR_INDEX;
-        }
-        else
-        {
-            index = HUNDRED_DOLLAR_INDEX;
-        }
-        bank->getCoin(index)->addCount(-1);
+        bank->getCoinByCent(paid_list.at(i))->addCount(-1);
     }
 }
 
@@ -334,52 +290,7 @@ void purchase(int dollars, int cents, Bank *bank)
         else
         {
             int payment = std::stoi(input);
-            DenomIndex index;
-            if (payment == FIVE_CENT)
-            {
-                index = FIVE_CENT_INDEX;
-            }
-            else if (payment == TEN_CENT)
-            {
-                index = TEN_CENT_INDEX;
-            }
-            else if (payment == TWENTY_CENT)
-            {
-                index = TWENTY_CENT_INDEX;
-            }
-            else if (payment == FIFTY_CENT)
-            {
-                index = FIFTY_CENT_INDEX;
-            }
-            else if (payment == ONE_DOLLAR)
-            {
-                index = ONE_DOLLAR_INDEX;
-            }
-            else if (payment == TWO_DOLLAR)
-            {
-                index = TWO_DOLLAR_INDEX;
-            }
-            else if (payment == FIVE_DOLLAR)
-            {
-                index = FIVE_DOLLAR_INDEX;
-            }
-            else if (payment == TEN_DOLLAR)
-            {
-                index = TEN_DOLLAR_INDEX;
-            }
-            else if (payment == TWENTY_DOLLAR)
-            {
-                index = TWENTY_DOLLAR_INDEX;
-            }
-            else if (payment == FIFTY_DOLLAR)
-            {
-                index = FIFTY_DOLLAR_INDEX;
-            }
-            else
-            {
-                index = HUNDRED_DOLLAR_INDEX;
-            }
-            bank->getCoin(index)->addCount(1);
+            bank->getCoinByCent(payment)->addCount(1);
             paid_bills.insert(paid_bills.begin(), payment);
             toPay -= payment;
         }
