@@ -115,7 +115,7 @@ Coin *Bank::getCoinByCent(unsigned cents)
     }
     else
     {
-        Helper::printInvalidInput("Error: invalid denomination encountered.");
+        cout << "Error: invalid denomination encountered." << endl;
     }
     return coin;
 }

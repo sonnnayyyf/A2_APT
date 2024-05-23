@@ -176,14 +176,16 @@ bool is_valid_bill(string bill)
 
 int min(unsigned int a, unsigned int b)
 {
+    int smaller_num;
     if (a > b)
     {
-        return b;
+        smaller_num = b;
     }
     else
     {
-        return a;
+        smaller_num = a;
     }
+    return smaller_num;
 }
 
 bool refund_possible(unsigned int Amount, int Index, Bank *bank)
@@ -406,13 +408,13 @@ void pickMeal(LinkedList *list, Bank *bank)
     cout << "-------------\n";
     cout << "Please enter the ID of the food you wish to purchase: ";
     // bool foodFound = false;
-    string choice = "";
-    std::getline(cin >> std::ws, choice);
+    string choice;
+    std::getline(cin, choice);
     choice.erase(choice.find_last_not_of(" \t\r\n\v\f") + 1);
 
     FoodItem *curr = list->get(choice);
 
-    if (cin.eof())
+    if (cin.eof() || choice.length() == 0)
     {
         cout << endl
              << "Purchase cancelled!";
