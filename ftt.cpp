@@ -9,6 +9,7 @@
 #include "string.h"
 #include "fileLoader.h"
 #include "helper.h"
+#include "vendingMachine.h"
 
 #define EXPECTED_ARGUMENTS 3
 
@@ -25,17 +26,6 @@ using std::vector;
  * data, display the main menu, and handles the processing of options.
  * Make sure free memory and close all files before exiting the program..
  **/
-
-void pickMeal(LinkedList *list, Bank *bank);
-void purchase(int dollars, int cents, Bank *bank);
-void cancel_purchase(vector<int> paid_list, Bank *bank);
-bool refund(unsigned int Amount, int Index, Bank *bank);
-bool refund_possible(unsigned int Amount, int Index, Bank *bank);
-int min(unsigned int a, unsigned int b);
-bool is_valid_bill(int bill);
-
-bool refundTest(int amount, Bank *bank);
-
 int main(int argc, char **argv)
 {
     string mainMenu = "Main Menu:\n";
@@ -61,19 +51,20 @@ int main(int argc, char **argv)
         string coinsFile = argv[2];
 
         LinkedList *list = new LinkedList();
-        FileLoader fileLoader;
         Bank *bank = new Bank();
+        FileLoader fileLoader;
+        VendingMachine *vendingMachine = new VendingMachine(list, bank, fileLoader);
 
-        if (fileLoader.loadFoodData(foodsFile, list) && fileLoader.loadCoinData(coinsFile, bank))
+        if (vendingMachine->loadVendingMachine(foodsFile, coinsFile))
         {
             bool menuRunning = true;
             cout << mainMenu;
             string input = "";
-            std::getline(cin >> std::ws, input);
-            input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+            std::getline(cin, input);
 
             while (menuRunning && !input.empty())
             {
+                input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
                 if (cin.eof())
                 {
                     cout << endl;
@@ -96,32 +87,29 @@ int main(int argc, char **argv)
                         {
                             if (choice == 1)
                             {
-                                list->printItems();
+                                vendingMachine->displayItems();
                             }
                             else if (choice == 2)
                             {
-                                pickMeal(list, bank);
+                                vendingMachine->purchaseItem();
                             }
                             else if (choice == 3)
                             {
-                                fileLoader.enterFoodData("foodsTest.dat", list);
-                                fileLoader.enterCoinData("coinsTest.dat", bank);
+                                vendingMachine->saveData("foodsTest.dat", "coinsTest.dat");
                                 cout << "Data saved and program exiting." << endl;
                                 menuRunning = false;
                             }
                             else if (choice == 4)
                             {
-                                // TODO
-                                list->addFood();
+                                vendingMachine->addItem();
                             }
                             else if (choice == 5)
                             {
-                                // TODO
-                                list->removeFood();
+                                vendingMachine->removeItem();
                             }
                             else if (choice == 6)
                             {
-                                bank->displayBalance();
+                                vendingMachine->displayBalance();
                             }
                             else if (choice == 7)
                             {
@@ -143,8 +131,7 @@ int main(int argc, char **argv)
                     if (menuRunning != false)
                     {
                         cout << mainMenu;
-                        std::getline(cin >> std::ws, input);
-                        input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+                        std::getline(cin, input);
                     }
                 }
             }
@@ -153,287 +140,11 @@ int main(int argc, char **argv)
         {
             Helper::printInvalidInput("Files could not be loaded. Aborting Program.");
         }
-        delete list;
-        delete bank;
+        delete vendingMachine;
     }
 
     return EXIT_SUCCESS;
 }
 
-bool is_valid_bill(string bill)
-{
-    bool bill_found = false;
-    string valid_bills[NUM_DENOMS] = {"5", "10", "20", "50", "100", "200", "500", "1000", "2000", "5000", "10000"};
-    for (int i = 0; i < 11; i++)
-    {
-        if (valid_bills[i] == bill)
-        {
-            bill_found = true;
-        }
-    }
-    return bill_found;
-}
-
-int min(unsigned int a, unsigned int b)
-{
-    if (a > b)
-    {
-        return b;
-    }
-    else
-    {
-        return a;
-    }
-}
-
-bool refund_possible(unsigned int Amount, int Index, Bank *bank)
-{
-    int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
-    if (Amount == 0)
-        return true;
-    if (Index >= NUM_DENOMS)
-        return false;
-    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
-    for (int i = Range; i >= 0; i--)
-    {
-        int RemainingAmount = Amount - (i * valid_bills[Index]);
-        bool result = refund_possible(RemainingAmount, Index + 1, bank);
-        if (result == true)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool refund(unsigned int Amount, int Index, Bank *bank)
-{
-    int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
-    if (Amount == 0)
-        return true;
-    if (Index >= NUM_DENOMS)
-        return false;
-    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
-    for (int i = Range; i >= 0; i--)
-    {
-        int RemainingAmount = Amount - (i * valid_bills[Index]);
-        if (refund(RemainingAmount, Index + 1, bank))
-        {
-            int return_count = i;
-            while (return_count > 0)
-            {
-
-                if (valid_bills[Index] < 100)
-                {
-                    cout << valid_bills[Index];
-                    cout << "c ";
-                    bank->getCoin(Index)->addCount(-1);
-                }
-                else
-                {
-                    cout << "$";
-                    cout << valid_bills[Index] / 100;
-                    cout << " ";
-                    bank->getCoin(Index)->addCount(-1);
-                }
-                return_count--;
-            }
-            return true;
-        }
-    }
-    return false;
-}
-
-void cancel_purchase(vector<int> paid_list, Bank *bank)
-{
-    for (auto i = paid_list.begin(); i != paid_list.end(); i++)
-    {
-        DenomIndex index;
-        if (*i == FIVE_CENT)
-        {
-            index = FIVE_CENT_INDEX;
-        }
-        else if (*i == TEN_CENT)
-        {
-            index = TEN_CENT_INDEX;
-        }
-        else if (*i == TWENTY_CENT)
-        {
-            index = TWENTY_CENT_INDEX;
-        }
-        else if (*i == FIFTY_CENT)
-        {
-            index = FIFTY_CENT_INDEX;
-        }
-        else if (*i == ONE_DOLLAR)
-        {
-            index = ONE_DOLLAR_INDEX;
-        }
-        else if (*i == TWO_DOLLAR)
-        {
-            index = TWO_DOLLAR_INDEX;
-        }
-        else if (*i == FIVE_DOLLAR)
-        {
-            index = FIVE_DOLLAR_INDEX;
-        }
-        else if (*i == TEN_DOLLAR)
-        {
-            index = TEN_DOLLAR_INDEX;
-        }
-        else if (*i == TWENTY_DOLLAR)
-        {
-            index = TWENTY_DOLLAR_INDEX;
-        }
-        else if (*i == FIFTY_DOLLAR)
-        {
-            index = FIFTY_DOLLAR_INDEX;
-        }
-        else
-        {
-            index = HUNDRED_DOLLAR_INDEX;
-        }
-        bank->getCoin(index)->addCount(-1);
-    }
-}
-
-void purchase(int dollars, int cents, Bank *bank)
-{
-    vector<int> paid_bills = {};
-    int toPay = dollars * 100 + cents;
-    while (toPay > 0)
-    {
-        cout << "You still need to give us $ " + std::to_string(toPay / 100) + ".";
-        if (toPay % 100 > 9)
-        {
-            cout << std::to_string(toPay % 100) + ": ";
-        }
-        else
-        {
-            cout << "0" + std::to_string(toPay % 100) + ": ";
-        }
-
-        string input;
-        std::getline(cin, input);
-        input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
-
-        if (cin.eof() || input.length() == 0)
-        {
-            cout << endl
-                 << "Purchase cancelled!\n";
-            toPay = 0;
-            cancel_purchase(paid_bills, bank);
-        }
-        else if (is_valid_bill(input) == false || Helper::isNumber(input) == false)
-        {
-            cout << "Error: invalid denomination encountered.\n";
-        }
-        // identify demon +add coin to bank + add coin to paid list
-        else
-        {
-            int payment = std::stoi(input);
-            DenomIndex index;
-            if (payment == FIVE_CENT)
-            {
-                index = FIVE_CENT_INDEX;
-            }
-            else if (payment == TEN_CENT)
-            {
-                index = TEN_CENT_INDEX;
-            }
-            else if (payment == TWENTY_CENT)
-            {
-                index = TWENTY_CENT_INDEX;
-            }
-            else if (payment == FIFTY_CENT)
-            {
-                index = FIFTY_CENT_INDEX;
-            }
-            else if (payment == ONE_DOLLAR)
-            {
-                index = ONE_DOLLAR_INDEX;
-            }
-            else if (payment == TWO_DOLLAR)
-            {
-                index = TWO_DOLLAR_INDEX;
-            }
-            else if (payment == FIVE_DOLLAR)
-            {
-                index = FIVE_DOLLAR_INDEX;
-            }
-            else if (payment == TEN_DOLLAR)
-            {
-                index = TEN_DOLLAR_INDEX;
-            }
-            else if (payment == TWENTY_DOLLAR)
-            {
-                index = TWENTY_DOLLAR_INDEX;
-            }
-            else if (payment == FIFTY_DOLLAR)
-            {
-                index = FIFTY_DOLLAR_INDEX;
-            }
-            else
-            {
-                index = HUNDRED_DOLLAR_INDEX;
-            }
-            bank->getCoin(index)->addCount(1);
-            paid_bills.insert(paid_bills.begin(), payment);
-            toPay -= payment;
-        }
-    }
-
-    toPay = 0 - toPay;
-    if (toPay > 0)
-    {
-        if (refund_possible(toPay, 0, bank))
-        {
-            cout << "Your change is ";
-            refund(toPay, 0, bank);
-            cout << "\n";
-        }
-        else
-        {
-            cout << "Insufficient change in system. Purchase cancelled.\n";
-            cancel_purchase(paid_bills, bank);
-        }
-    }
-}
-
-void pickMeal(LinkedList *list, Bank *bank)
-{
-    cout << "Purchase Meal:\n";
-    cout << "-------------\n";
-    cout << "Please enter the ID of the food you wish to purchase: ";
-    // bool foodFound = false;
-    string choice = "";
-    std::getline(cin >> std::ws, choice);
-    choice.erase(choice.find_last_not_of(" \t\r\n\v\f") + 1);
-
-    FoodItem *curr = list->get(choice);
-
-    if (cin.eof())
-    {
-        cout << endl
-             << "Purchase cancelled!";
-    }
-
-    else if (curr != nullptr && curr->onHand > 0)
-
-    {
-        // foodFound = true;
-        cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
-        cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." << std::to_string(curr->price->cents) << ".\n";
-        cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
-        cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
-        purchase(curr->price->dollars, curr->price->cents, bank);
-    }
-    else
-    {
-        cout << "The ID is invalid or there is no dish left of the ID\n";
-        pickMeal(list, bank);
-        // print error message
-    }
-}
 // Compiling terminal code
-// g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp
+// g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp vendingMachine.cpp

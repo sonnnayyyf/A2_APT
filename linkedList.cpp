@@ -10,6 +10,7 @@ using std::setw;
 using std::string;
 using std::vector;
 
+// Constructor
 LinkedList::LinkedList()
 {
     head = nullptr;
@@ -18,10 +19,7 @@ LinkedList::LinkedList()
     // TODO
 }
 
-LinkedList::LinkedList(LinkedList &other)
-{
-}
-
+// Deconstructor
 LinkedList::~LinkedList()
 {
     Node *curr = this->head;
@@ -35,12 +33,14 @@ LinkedList::~LinkedList()
     }
 }
 
+// Returns the number of items in the list
 unsigned LinkedList::size()
 {
     return count;
 }
 
-FoodItem *LinkedList::get(std::string FoodID)
+// Returns the food item in the list based on the food id entered
+FoodItem *LinkedList::get(string FoodID)
 {
     FoodItem *retItem = nullptr;
 
@@ -56,25 +56,8 @@ FoodItem *LinkedList::get(std::string FoodID)
     return retItem;
 }
 
-void LinkedList::addFront(FoodItem *foodItem)
-{
-    Node *newNode = new Node(foodItem);
-
-    if (this->head == nullptr)
-    {
-        newNode->next = nullptr;
-        this->head = newNode;
-        this->tail = newNode;
-    }
-    else
-    {
-        newNode->next = this->head;
-        this->head = newNode;
-    }
-    this->count++;
-}
-
-void LinkedList::addBack(FoodItem *foodItem)
+// Adds FoodItem into to linked list and sorts it into position by name on insert
+void LinkedList::addItem(FoodItem *foodItem)
 {
     std::string name = foodItem->name;
     Node *newNode = new Node(foodItem);
@@ -124,6 +107,7 @@ void LinkedList::addBack(FoodItem *foodItem)
     this->count++;
 }
 
+// Removes item with entered ID from the list
 void LinkedList::remove(std::string foodID)
 {
     Node *curr = this->head;
@@ -156,6 +140,7 @@ void LinkedList::remove(std::string foodID)
     }
 }
 
+// Removes the first item in the linked list
 void LinkedList::removeFront()
 {
     Node *curr = this->head;
@@ -163,57 +148,15 @@ void LinkedList::removeFront()
     delete curr;
 }
 
+// Returns the head of the linked list
 Node *LinkedList::getHead()
 {
     Node *curr = this->head;
     return curr;
 }
 
-bool LinkedList::removeFood()
-{
-    bool success = false;
-    bool removing = true;
-    string input = "";
-    cout << "Enter the food id of the food to remove from the menu: ";
-    std::getline(cin >> std::ws, input);
-    input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
-    while (removing && !input.empty())
-    {
-        if (std::cin.eof())
-        {
-            cout << endl;
-            cout << endl;
-            cout << "End Of File character inputted" << endl;
-            removing = false;
-        }
-        else
-        {
-            cout << endl;
-            FoodItem *item = this->get(input);
-            if (item != nullptr)
-            {
-                item->printRemove();
-                cout << endl;
-                this->remove(input);
-                success = true;
-                removing = false;
-            }
-            else
-            {
-                cout << "Item with entered id does not exist. Please try again." << endl;
-                cout << "Enter the food id of the food to remove from the menu: ";
-                std::getline(cin >> std::ws, input);
-                input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
-            }
-        }
-    }
-
-    return success;
-}
-
 // Prints menu items
-
-void LinkedList::printItems()
+void LinkedList::displayItems()
 {
     Node *curr = this->head;
     cout << "Food Menu" << endl;
@@ -312,6 +255,6 @@ void LinkedList::addFood()
     Price *price = new Price(stoi(split[0]), stoi(split[1]));
     FoodItem *item = new FoodItem(id, name, description, price, DEFAULT_FOOD_STOCK_LEVEL);
 
-    this->addBack(item);
+    this->addItem(item);
     cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
 }

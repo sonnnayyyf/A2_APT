@@ -8,7 +8,6 @@ class LinkedList
 {
 public:
     LinkedList();
-    LinkedList(LinkedList &other);
     ~LinkedList();
 
     // more functions to be added perhaps...
@@ -17,17 +16,17 @@ public:
     FoodItem *get(std::string FoodItem);
 
     void addFront(FoodItem *);
-    void addBack(FoodItem *);
+    void addItem(FoodItem *);
 
     void remove(std::string foodID);
 
     void removeFront();
     void removeBack();
-    bool removeFood();
     void addFood();
 
-    void printItems();
-    Node* getHead();
+    void displayItems();
+    Node *getHead();
+
 private:
     // the beginning of the list
     Node *head;

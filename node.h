@@ -52,9 +52,9 @@ public:
 
     void printItem();
     std::string writeItem();
+    std::string getPrice();
 
     void printRemove();
-
 
     // the unique id for this food item
     std::string id;
