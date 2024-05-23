@@ -169,46 +169,78 @@ Node *LinkedList::getHead()
     return curr;
 }
 
-bool LinkedList::removeFood()
+// bool LinkedList::removeFood()
+// {
+//     bool success = false;
+//     bool removing = true;
+//     string input;
+//     cout << "Enter the food id of the food to remove from the menu: ";
+//     std::getline(cin >> std::ws, input);
+//     input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+    
+//     while (removing)
+//     {
+//         if (cin.eof() || input.length() == 0)
+//         {
+//             cout << endl;
+//             cout << endl;
+//             cout << "End Of File character inputted" << endl;
+//             removing = false;
+//         }
+//         else
+//         {
+//             cout << endl;
+//             FoodItem *item = this->get(input);
+//             if (item != nullptr)
+//             {
+//                 item->printRemove();
+//                 cout << endl;
+//                 this->remove(input);
+//                 success = true;
+//                 removing = false;
+//             }
+//             else
+//             {
+//                 cout << "Item with entered id does not exist. Please try again." << endl;
+//                 cout << endl;
+//                 cout << "Enter the food id of the food to remove from the menu: ";
+//                 std::getline(cin >> std::ws, input);
+//                 input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+//             }
+//         }
+//     }
+
+//     return success;
+// }
+
+void LinkedList::removeFood()
 {
-    bool success = false;
-    bool removing = true;
-    string input = "";
     cout << "Enter the food id of the food to remove from the menu: ";
-    std::getline(cin >> std::ws, input);
+    string input = Helper::readInput();
     input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
-    while (removing && !input.empty())
+
+    // If input is empty or EOF is reached, return to main menu
+    if (cin.eof() || input.length() == 0)
     {
-        if (std::cin.eof())
-        {
-            cout << endl;
-            cout << endl;
-            cout << "End Of File character inputted" << endl;
-            removing = false;
-        }
-        else
-        {
-            cout << endl;
-            FoodItem *item = this->get(input);
-            if (item != nullptr)
-            {
-                item->printRemove();
-                cout << endl;
-                this->remove(input);
-                success = true;
-                removing = false;
-            }
-            else
-            {
-                cout << "Item with entered id does not exist. Please try again." << endl;
-                cout << "Enter the food id of the food to remove from the menu: ";
-                std::getline(cin >> std::ws, input);
-                input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
-            }
-        }
+        Helper::printInvalidInput("No input provided. Returning to main menu.");
+        return;
     }
 
-    return success;
+    FoodItem *item = this->get(input);
+    if (item != nullptr)
+    {
+        string id = item->id;
+        string name = item->name;
+        string description = item->description;
+
+        this->remove(input);
+
+        cout << "\"" << id << " - " << name << " - " << description << "\"" << " has been removed from the menu." << endl;
+    }
+    else
+    {
+        Helper::printInvalidInput("Item id does not exist.");
+    }
 }
 
 // Prints menu items
@@ -252,6 +284,11 @@ void LinkedList::addFood()
     std::getline(cin, name);
     name.erase(name.find_last_not_of(" \t\r\n\v\f") + 1);
 
+    if (cin.eof() || name.length() == 0)
+    {
+        return;
+    }
+
     while (name.length() > NAMELEN)
     {
         cout << "Name is too long, please enter a name with less than " << NAMELEN << " characters: ";
@@ -269,6 +306,12 @@ void LinkedList::addFood()
     string description;
     std::getline(cin, description);
     description.erase(description.find_last_not_of(" \t\r\n\v\f") + 1);
+
+    if (cin.eof() || description.length() == 0)
+    {
+        return;
+    }
+
     while (description.length() > DESCLEN)
     {
         cout << "Description is too long, please enter a description with less than " << DESCLEN << " characters: ";
@@ -286,6 +329,11 @@ void LinkedList::addFood()
     string dollars;
     std::getline(cin, dollars);
     dollars.erase(dollars.find_last_not_of(" \t\r\n\v\f") + 1);
+
+    if (cin.eof() || dollars.length() == 0)
+    {
+        return;
+    }
 
     vector<string> split;
     // split the string into dollars and cents

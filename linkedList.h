@@ -23,7 +23,7 @@ public:
 
     void removeFront();
     void removeBack();
-    bool removeFood();
+    void removeFood();
     void addFood();
 
     void printItems();
