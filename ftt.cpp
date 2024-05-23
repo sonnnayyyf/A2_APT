@@ -425,7 +425,13 @@ void pickMeal(LinkedList *list, Bank *bank)
     {
         // foodFound = true;
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
-        cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." << std::to_string(curr->price->cents) << ".\n";
+        cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." ;
+        if(curr->price->cents < 10){
+            cout << "0" << std::to_string(curr->price->cents) << ".\n";
+        }
+        else{
+            cout << std::to_string(curr->price->cents) << ".\n";
+        }
         cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
         cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
         purchase(curr->price->dollars, curr->price->cents, bank);
