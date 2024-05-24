@@ -37,6 +37,109 @@ bool VendingMachine::loadVendingMachine(string foodFilePath, string coinFilePath
 
 void VendingMachine::addItem()
 {
+    bool adding = true;
+    string id = "";
+    if (this->foods->size() < 9)
+    {
+        id = "F000";
+    }
+    else if (this->foods->size() < 99)
+    {
+        id = "F00";
+    }
+    else if (this->foods->size() < 999)
+    {
+        id = "F0";
+    }
+    else if (this->foods->size() < 9999)
+    {
+        id = "F";
+    }
+
+    cout << "The id for the new food will be " << id << this->foods->size() + 1 << endl;
+
+    cout << "Enter the name of the food: ";
+    string name = "";
+    string description = "";
+    string input = "";
+    std::getline(cin, input);
+
+    while (!cin.eof() && !input.empty() && adding)
+    {
+        Helper::removeWhitespace(input);
+
+        if (input.length() <= NAMELEN)
+        {
+            if (input.find("|") == string::npos)
+            {
+                name = input;
+
+                cout << "Enter the description of the food: ";
+                std::getline(cin, input);
+
+                while (!cin.eof() && !input.empty() && adding)
+                {
+                    Helper::removeWhitespace(input);
+
+                    if (input.length() <= DESCLEN)
+                    {
+                        if (input.find("|") == string::npos)
+                        {
+                            description = input;
+
+                            cout << "Enter the price of the food: ";
+                            std::getline(cin, input);
+
+                            while (!cin.eof() && !input.empty() && adding)
+                            {
+                                Helper::removeWhitespace(input);
+                                vector<string> split;
+                                // split the string into dollars and cents
+                                Helper::splitString(input, split, ".");
+                                if (split.size() == 2 && Helper::isNumber(split[0]) && Helper::isNumber(split[1]) && stoi(split[1]) % 5 == 0 && stoi(split[0]) > 0 && stoi(split[1]) > 0)
+                                {
+                                    id = id + std::to_string(this->foods->size() + 1);
+
+                                    Price *price = new Price(stoi(split[0]), stoi(split[1]));
+                                    FoodItem *item = new FoodItem(id, name, description, price, DEFAULT_FOOD_STOCK_LEVEL);
+
+                                    this->foods->addItem(item);
+                                    cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
+                                    adding = false;
+                                }
+                                else
+                                {
+                                    cout << "Not a valid price, please enter a valid price: ";
+                                    std::getline(cin, input);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            cout << "Description cannot contain the character '|', please enter a description without the character '|': ";
+                            std::getline(cin, input);
+                        }
+                    }
+                    else
+                    {
+                        cout << "Description is too long, please enter a description with less than " << DESCLEN << " characters: ";
+                        std::getline(cin, input);
+                    }
+                }
+            }
+            else
+            {
+                cout << "Name cannot contain the character '|', please enter a name without the character '|': ";
+                std::getline(cin, input);
+            }
+        }
+        else
+        {
+
+            cout << "Name is too long, please enter a name with less than " << NAMELEN << " characters: ";
+            std::getline(cin, input);
+        }
+    }
 }
 
 bool VendingMachine::removeItem()
@@ -167,6 +270,10 @@ void VendingMachine::purchaseItem()
                     cancelPurchase(paid_bills);
                     cancelRefund(refundedBills);
                 }
+            }
+            else
+            {
+                curr->onHand -= 1;
             }
         }
         else
