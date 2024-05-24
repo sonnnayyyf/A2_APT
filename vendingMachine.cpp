@@ -182,6 +182,7 @@ void VendingMachine::purchaseItem() {
   string choice = "";
   std::getline(cin, choice);
 
+  // check for End of file and Enter on empty line
   if (choice.empty() || cin.eof()) {
     cout << endl << "Purchase cancelled!";
   } else {
