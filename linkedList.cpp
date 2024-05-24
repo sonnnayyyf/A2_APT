@@ -215,32 +215,37 @@ Node *LinkedList::getHead()
 
 void LinkedList::removeFood()
 {
-    cout << "Enter the food id of the food to remove from the menu: ";
-    string input = Helper::readInput();
-    input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
+    string input;
+    FoodItem *item = nullptr;
 
-    // If input is empty or EOF is reached, return to main menu
-    if (cin.eof() || input.length() == 0)
+    do
     {
-        Helper::printInvalidInput("No input provided. Returning to main menu.");
-        return;
-    }
+        cout << "Enter the food id of the food to remove from the menu: ";
+        input = Helper::readInput();
+        input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
 
-    FoodItem *item = this->get(input);
-    if (item != nullptr)
-    {
-        string id = item->id;
-        string name = item->name;
-        string description = item->description;
+        // If input is empty or EOF is reached, return to main menu
+        if (cin.eof() || input.length() == 0)
+        {
+            Helper::printInvalidInput("No input provided. Returning to main menu.");
+            return;
+        }
 
-        this->remove(input);
+        item = this->get(input);
+        if (item == nullptr)
+        {
+            Helper::printInvalidInput("Item id does not exist.");
+            cout << endl;
+        }
+    } while (item == nullptr);
 
-        cout << "\"" << id << " - " << name << " - " << description << "\"" << " has been removed from the menu." << endl;
-    }
-    else
-    {
-        Helper::printInvalidInput("Item id does not exist.");
-    }
+    string id = item->id;
+    string name = item->name;
+    string description = item->description;
+
+    this->remove(input);
+
+    cout << "\"" << id << " - " << name << " - " << description << "\"" << " has been removed from the menu." << endl;
 }
 
 // Prints menu items
