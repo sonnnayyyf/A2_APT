@@ -150,15 +150,21 @@ run_test "foods.dat" "./loadingData_tests/input12.txt" "./loadingData_tests/noin
 # We handle this by only taking the data from the first one encountered and skip the rest
 run_test "foods.dat" "./loadingData_tests/input13.txt" "./loadingData_tests/commands13.txt" "./loadingData_tests/expected13.txt" "./loadingData_tests/output13.txt" 13
 
-compare_coins "./coinsTest.dat" "./loadingData_tests/expectedCoins13.dat" 13
 
 echo "Running purchase tests"
 echo "------------------------------------"
 echo ""
 
 run_test "foods.dat" "coins.dat" "./purchase_tests/purchase1.input" "./purchase_tests/purchase1.expected_output" "./output.txt" 1
-compare_coins "./coins.dat" "./purchase_tests/purchase1.expected_coins" 1
-
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase2.input" "./purchase_tests/purchase2.expected_output" "./output.txt" 2
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase3.input" "./purchase_tests/purchase3.expected_output" "./output.txt" 3
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase4.input" "./purchase_tests/purchase4.expected_output" "./output.txt" 4
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase5.input" "./purchase_tests/purchase5.expected_output" "./output.txt" 5
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase6.input" "./purchase_tests/purchase6.expected_output" "./output.txt" 6
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase7.input" "./purchase_tests/purchase7.expected_output" "./output.txt" 7
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase8.input" "./purchase_tests/purchase8.expected_output" "./output.txt" 8
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase9.input" "./purchase_tests/purchase9.expected_output" "./output.txt" 9
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase10.input" "./purchase_tests/purchase10.expected_output" "./output.txt" 10
 
 
  

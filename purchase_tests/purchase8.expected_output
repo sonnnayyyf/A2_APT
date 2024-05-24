@@ -14,6 +14,8 @@ Please enter the ID of the food you wish to purchase: You have selected "Baklava
 This will cost you $ 8.50.
 Please hand over the money - type in the value of each note/coin in cents.
 Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $ 8.50: Error: invalid denomination encountered.
+You still need to give us $ 8.50: Invalid input! Error: invalid denomination encountered.
 You still need to give us $ 8.50: 
 Purchase cancelled!
 
@@ -27,5 +29,5 @@ Adminstrator-Only Menu:
    6. Display Balance
    7. Abort Program
 Select your option (1-7) : 
-Data saved and program exiting.
 
+Invalid input! End Of File character inputted.

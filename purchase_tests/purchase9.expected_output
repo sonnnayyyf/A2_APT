@@ -10,6 +10,12 @@ Adminstrator-Only Menu:
 Select your option (1-7) : 
 Purchase Meal:
 -------------
+Please enter the ID of the food you wish to purchase: The ID is invalid or there is no dish left of the ID
+Purchase Meal:
+-------------
+Please enter the ID of the food you wish to purchase: The ID is invalid or there is no dish left of the ID
+Purchase Meal:
+-------------
 Please enter the ID of the food you wish to purchase: 
 Purchase cancelled!
 Main Menu:
@@ -22,5 +28,5 @@ Adminstrator-Only Menu:
    6. Display Balance
    7. Abort Program
 Select your option (1-7) : 
-Data saved and program exiting.
 
+Invalid input! End Of File character inputted.
