@@ -192,67 +192,82 @@ int min(unsigned int a, unsigned int b)
 // a recursion function to check for refund capability
 bool refund_possible(unsigned int Amount, int Index, Bank *bank)
 {
+    // this result saves thte bool value for return at the end of function
+    bool result = false;
     // the list of accepted denominations put in order to check from high to low to minimise the number of coins returned
     int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
     // this occurs when the refund is possible
     if (Amount == 0)
-        return true;
+        result = true;
     //this occurs when there is no way to refund the desired amount(including not having the right coin for it)
-    if (Index >= NUM_DENOMS)
-        return false;
-    // pick the maximum number of coins available or the refund needed
-    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
-    // the recursion occurs to find all possible refund method
-    for (int i = Range; i >= 0; i--)
-    {
-        int RemainingAmount = Amount - (i * valid_bills[Index]);
-        // if the refund method is found, a chain reaction will let the original function return true
-        bool result = refund_possible(RemainingAmount, Index + 1, bank);
-        if (result == true)
+    else if (Index >= NUM_DENOMS)
+        result = false;
+    else{
+        // pick the maximum number of coins available or the refund needed
+        int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
+        // the recursion occurs to find all possible refund method
+        for (int i = Range; i >= 0 && !result; i--)
         {
-            return true;
+            // this assumes the amount of money left not refunded with i coins refunded, it will not affect the Amount variable through for loop
+            int RemainingAmount = Amount - (i * valid_bills[Index]);
+            // recursion to the next denomination
+            result = refund_possible(RemainingAmount, Index + 1, bank);
         }
     }
-    return false;
+    
+    return result;
 }
 // a modified version of refund_possible, added the ability to print out the coins and reduce the coins in bank accordingly
 bool refund(unsigned int Amount, int Index, Bank *bank)
 {
+    // this result saves thte bool value for return at the end of function
+    bool result = false;
+    // the list of accepted denominations put in order to check from high to low to minimise the number of coins returned
     int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
+    // this occurs when the refund is possible
     if (Amount == 0)
-        return true;
-    if (Index >= NUM_DENOMS)
-        return false;
-    int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
-    for (int i = Range; i >= 0; i--)
-    {
-        int RemainingAmount = Amount - (i * valid_bills[Index]);
-        if (refund(RemainingAmount, Index + 1, bank))
+        result = true;
+    //this occurs when there is no way to refund the desired amount(including not having the right coin for it)
+    else if (Index >= NUM_DENOMS)
+        result = false;
+    else{
+        // pick the maximum number of coins available or the refund needed
+        int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
+        // the recursion occurs to find all possible refund method
+        for (int i = Range; i >= 0 && !result; i--)
         {
-            // the return count is useful when multiple coins of same value is refunded
-            int return_count = i;
-            while (return_count > 0)
+            // this assumes the amount of money left not refunded with i coins refunded, it will not affect the Amount variable through for loop
+            int RemainingAmount = Amount - (i * valid_bills[Index]);
+            // recursion to the next denomination
+            result = refund(RemainingAmount, Index + 1, bank);
+            if (result)
             {
-                // identify and print the coin in the right format
-                if (valid_bills[Index] < 100)
+                // the return count is useful when multiple coins of same value is refunded
+                int return_count = i;
+                while (return_count > 0)
                 {
-                    cout << valid_bills[Index];
-                    cout << "c ";
-                    bank->getCoin(Index)->addCount(-1);
+                    // identify and print the coin in the right format
+                    if (valid_bills[Index] < 100)
+                    {
+                        cout << valid_bills[Index];
+                        cout << "c ";
+                        bank->getCoin(Index)->addCount(-1);
+                    }
+                    else
+                    {
+                        cout << "$";
+                        cout << valid_bills[Index] / 100;
+                        cout << " ";
+                        bank->getCoin(Index)->addCount(-1);
+                    }
+                    return_count--;
                 }
-                else
-                {
-                    cout << "$";
-                    cout << valid_bills[Index] / 100;
-                    cout << " ";
-                    bank->getCoin(Index)->addCount(-1);
-                }
-                return_count--;
+                
             }
-            return true;
         }
     }
-    return false;
+    
+    return result;
 }
 
 void cancel_purchase(vector<int> paid_list, Bank *bank)
@@ -318,6 +333,7 @@ void purchase(FoodItem *curr, int dollars, int cents, Bank *bank)
     if (toPay > 0)
     {
         //check if it is possible to refund with the coins in bank before performing the payment to avoid false behaviour
+        
         if (refund_possible(toPay, 0, bank))
         {
             cout << "Your change is ";
@@ -360,7 +376,7 @@ void pickMeal(LinkedList *list, Bank *bank)
     //if the food is found in the saved linked list, curr points to that food object, onHand means how many dishes available
     else if (curr != nullptr && curr->onHand > 0)
     {
-        // foodFound = true;
+        
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
         cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." ;
         //specify to print 5 cents in the correct format
