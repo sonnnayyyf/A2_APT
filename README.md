@@ -9,8 +9,9 @@ Wai Yan Lin - s3963096
 Contributions:
 
 Wai Yan Lin - Linked list, bank, node, implementation. Bash file for running tests for loading in data to the program. Tests for loading in data from foods and coins file. Implemented display balance and display menu functions. Revised functions to not use returns. Making the make file.
-Nguyen Huu Khoi - Implementation of purchase function, refund function, purchase cancel function, save file function. Write tests for purchase functions (including purchase cancel and refund)
+Nguyen Huu Khoi - Implementation of purchase function, refund function, purchase cancel function, save file function. Write tests for purchase functions (including purchase cancel and refund).
 Tran Hoang Son - 
+
  Compiling terminal code:
  g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp vendingMachine.cpp
 
