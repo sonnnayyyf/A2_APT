@@ -100,6 +100,7 @@ int main(int argc, char **argv)
                             }
                             else if (choice == 2)
                             {
+                                //this is where purchasing a meal starts. The process will involve the meal list and the coins, either added more or remove for refund
                                 pickMeal(list, bank);
                             }
                             else if (choice == 3)
@@ -159,7 +160,7 @@ int main(int argc, char **argv)
 
     return EXIT_SUCCESS;
 }
-
+// check if the coin is allowed in the denomination accepted list
 bool is_valid_bill(string bill)
 {
     bool bill_found = false;
@@ -174,6 +175,7 @@ bool is_valid_bill(string bill)
     return bill_found;
 }
 
+//this function is implemented for environments that does not recognise min()
 int min(unsigned int a, unsigned int b)
 {
     int smaller_num;
@@ -187,18 +189,24 @@ int min(unsigned int a, unsigned int b)
     }
     return smaller_num;
 }
-
+// a recursion function to check for refund capability
 bool refund_possible(unsigned int Amount, int Index, Bank *bank)
 {
+    // the list of accepted denominations put in order to check from high to low to minimise the number of coins returned
     int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
+    // this occurs when the refund is possible
     if (Amount == 0)
         return true;
+    //this occurs when there is no way to refund the desired amount(including not having the right coin for it)
     if (Index >= NUM_DENOMS)
         return false;
+    // pick the maximum number of coins available or the refund needed
     int Range = min(bank->getCoin(Index)->getCount(), Amount / valid_bills[Index]);
+    // the recursion occurs to find all possible refund method
     for (int i = Range; i >= 0; i--)
     {
         int RemainingAmount = Amount - (i * valid_bills[Index]);
+        // if the refund method is found, a chain reaction will let the original function return true
         bool result = refund_possible(RemainingAmount, Index + 1, bank);
         if (result == true)
         {
@@ -207,7 +215,7 @@ bool refund_possible(unsigned int Amount, int Index, Bank *bank)
     }
     return false;
 }
-
+// a modified version of refund_possible, added the ability to print out the coins and reduce the coins in bank accordingly
 bool refund(unsigned int Amount, int Index, Bank *bank)
 {
     int valid_bills[NUM_DENOMS] = {10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5};
@@ -221,10 +229,11 @@ bool refund(unsigned int Amount, int Index, Bank *bank)
         int RemainingAmount = Amount - (i * valid_bills[Index]);
         if (refund(RemainingAmount, Index + 1, bank))
         {
+            // the return count is useful when multiple coins of same value is refunded
             int return_count = i;
             while (return_count > 0)
             {
-
+                // identify and print the coin in the right format
                 if (valid_bills[Index] < 100)
                 {
                     cout << valid_bills[Index];
@@ -248,16 +257,20 @@ bool refund(unsigned int Amount, int Index, Bank *bank)
 
 void cancel_purchase(vector<int> paid_list, Bank *bank)
 {
+    // iterate through the paid list(a vector)
     unsigned int vecsize = paid_list.size();
     for (unsigned int i = 0; i < vecsize; i++)
     {
+        // return the coins for change, taken from the bank
         bank->getCoinByCent(paid_list.at(i))->addCount(-1);
     }
 }
 
-void purchase(int dollars, int cents, Bank *bank)
+void purchase(FoodItem *curr, int dollars, int cents, Bank *bank)
 {
+    //paid_bills is used to save the coins that was paid, saved in a vector as number of coins is unknown
     vector<int> paid_bills = {};
+    //initialize the price as an integer in cents
     int toPay = dollars * 100 + cents;
     while (toPay > 0)
     {
@@ -271,39 +284,47 @@ void purchase(int dollars, int cents, Bank *bank)
             cout << "0" + std::to_string(toPay % 100) + ": ";
         }
 
+        //take bills as string instead of int to scan for empty lines
         string input;
         std::getline(cin, input);
         input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
 
         if (cin.eof() || input.length() == 0)
         {
-            cout << endl
-                 << "Purchase cancelled!\n";
+            cout << endl << "Purchase cancelled!\n";
+            //set the money needed to pay to 0 to end the payment cycle
             toPay = 0;
             cancel_purchase(paid_bills, bank);
         }
+        // identify denomination
         else if (is_valid_bill(input) == false || Helper::isNumber(input) == false)
         {
             cout << "Error: invalid denomination encountered.\n";
         }
-        // identify demon +add coin to bank + add coin to paid list
+        // add coin to bank + add coin to paid list
         else
         {
+            // change the input string to int for calculation
             int payment = std::stoi(input);
+            // add the paid coin to the bank, may be needed for change later
             bank->getCoinByCent(payment)->addCount(1);
             paid_bills.insert(paid_bills.begin(), payment);
             toPay -= payment;
         }
     }
 
+    // the toPay value can be negative so reverse it to postive for refund
     toPay = 0 - toPay;
     if (toPay > 0)
     {
+        //check if it is possible to refund with the coins in bank before performing the payment to avoid false behaviour
         if (refund_possible(toPay, 0, bank))
         {
             cout << "Your change is ";
             refund(toPay, 0, bank);
             cout << "\n";
+            // reduce the amount of meal available by 1
+            curr->onHand--;
         }
         else
         {
@@ -311,32 +332,38 @@ void purchase(int dollars, int cents, Bank *bank)
             cancel_purchase(paid_bills, bank);
         }
     }
+    // this happens when there is no change
+    else
+    {
+        curr->onHand--;
+    }
 }
-
+//this function handles the meal choosing option
 void pickMeal(LinkedList *list, Bank *bank)
 {
     cout << "Purchase Meal:\n";
     cout << "-------------\n";
     cout << "Please enter the ID of the food you wish to purchase: ";
-    // bool foodFound = false;
+    // the choice is received as a string since the food id was stored as a string
     string choice;
+    //this combination of getline and .erase was to implement the "Enter key to cancel" requirement and ensure smooth opera
     std::getline(cin, choice);
     choice.erase(choice.find_last_not_of(" \t\r\n\v\f") + 1);
 
     FoodItem *curr = list->get(choice);
 
+    //detect if the input file ends, the user press ctrl+D or enter a blank line
     if (cin.eof() || choice.length() == 0)
     {
-        cout << endl
-             << "Purchase cancelled!";
+        cout << endl << "Purchase cancelled!";
     }
-
+    //if the food is found in the saved linked list, curr points to that food object, onHand means how many dishes available
     else if (curr != nullptr && curr->onHand > 0)
-
     {
         // foodFound = true;
         cout << "You have selected \"" << curr->name << " - " << curr->description << ".\"\n";
         cout << "This will cost you $ " << std::to_string(curr->price->dollars) << "." ;
+        //specify to print 5 cents in the correct format
         if(curr->price->cents < 10){
             cout << "0" << std::to_string(curr->price->cents) << ".\n";
         }
@@ -345,13 +372,13 @@ void pickMeal(LinkedList *list, Bank *bank)
         }
         cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
         cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
-        purchase(curr->price->dollars, curr->price->cents, bank);
+        purchase(curr, curr->price->dollars, curr->price->cents, bank);
     }
     else
     {
         cout << "The ID is invalid or there is no dish left of the ID\n";
         pickMeal(list, bank);
-        // print error message
+        // print error message and let user choose another dish
     }
 }
 // Compiling terminal code
