@@ -1,4 +1,5 @@
 #include "bank.h"
+
 #include <iomanip>
 #include <iostream>
 
@@ -8,6 +9,7 @@ using std::left;
 using std::right;
 using std::setw;
 
+// Setting all the coin values with their indexes into the array with count 0
 Bank::Bank() {
   this->safe[HUNDRED_DOLLAR_INDEX] = new Coin(HUNDRED_DOLLAR, 0);
   this->safe[FIFTY_DOLLAR_INDEX] = new Coin(FIFTY_DOLLAR, 0);
@@ -23,22 +25,15 @@ Bank::Bank() {
   this->total = 0;
 }
 
+// Deconstructor goes through all the items in the array and deletes them
 Bank::~Bank() {
   for (int i = 0; i < NUM_DENOMS; i++) {
     delete this->safe[i];
   }
-  // delete[] this->safe;
 }
 
-// // Function for setting Coin object into array
-// void Bank::setCoin(DenomIndex index, Coin *coin)
-// {
-//     this->safe[index] = coin;
-//     this->total += coin->getTotal();
-// }
-
-// Function for calculating the total of all items in the
-
+// Calculates the total of all the coins that exist in the bank and sets it to
+// the total attribute
 void Bank::calcTotal() {
   this->total = 0;
   for (int i = 0; i < NUM_DENOMS; i++) {
@@ -46,12 +41,16 @@ void Bank::calcTotal() {
   }
 }
 
+// Returns the total attribute
 float Bank::getTotal() { return this->total; }
 
+// Get a coin in the array by DenomIndex
 Coin *Bank::getCoin(DenomIndex index) { return this->safe[index]; }
 
+// Get a coin in the array by index
 Coin *Bank::getCoin(int index) { return this->safe[index]; }
 
+// Get a coin in the array by DENOM for example 10000 = index 0
 Coin *Bank::getCoinByCent(unsigned cents) {
   Coin *coin = nullptr;
   if (cents == HUNDRED_DOLLAR) {
@@ -82,12 +81,14 @@ Coin *Bank::getCoinByCent(unsigned cents) {
   return coin;
 }
 
+// This is for managing balance in the bank
+// Operation decides if its adding or subtracting
+// Adds or Subtracts specified count into said coin
 bool Bank::manageBalance(unsigned cents, Operation op, int count) {
   bool success = false;
   Coin *coin = this->getCoinByCent(cents);
 
   if (coin != nullptr) {
-
     if (op == ADD) {
       coin->addCount(count);
       success = true;
@@ -101,6 +102,7 @@ bool Bank::manageBalance(unsigned cents, Operation op, int count) {
   return success;
 }
 
+// Displyas all the coins, their counts and their totals in the bank
 void Bank::displayBalance() {
   this->calcTotal();
   std::cout << std::fixed << std::setprecision(2);
