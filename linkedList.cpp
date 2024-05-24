@@ -272,17 +272,18 @@ void LinkedList::printItems()
 
 void LinkedList::addFood()
 {
-    string id;
-    if (this->count < 9)
-    {
-        id = "F000";
-    }
-    else
-    {
-        id = "F00";
+    // Find the maximum ID assigned so far
+    int maxId = 0;
+    for (Node* node = this->head; node != nullptr; node = node->next) {
+        int idNum = stoi(node->foodItem->id.substr(3));
+        if (idNum > maxId) {
+            maxId = idNum;
+        }
     }
 
-    cout << "The id for the new food will be " << id << this->count + 1 << endl;
+    // Assign the next ID to the new food item
+    string id = (maxId < 9 ? "F000" : "F00") + std::to_string(maxId + 1);
+    cout << "The id for the new food will be "<< id << endl;
     cout << endl;
     cout << "Enter the name of the food: ";
     string name;
@@ -363,7 +364,7 @@ void LinkedList::addFood()
     id = id + std::to_string(this->count + 1);
 
     Price *price = new Price(stoi(split[0]), stoi(split[1]));
-    FoodItem *item = new FoodItem(id, name, description, price, DEFAULT_FOOD_STOCK_LEVEL);
+    FoodItem *item = new FoodItem((maxId < 9 ? "F000" : "F00") + std::to_string(maxId + 1), name, description, price, DEFAULT_FOOD_STOCK_LEVEL);
 
     this->addBack(item);
     cout << "This food \"" << name << " - " << description << "\" has now been added to the menu." << endl;
