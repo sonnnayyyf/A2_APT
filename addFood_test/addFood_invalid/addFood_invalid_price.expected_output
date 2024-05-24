@@ -10,7 +10,7 @@ Adminstrator-Only Menu:
 Select your option (1-7) : 
 The id for the new food will be F0009
 
-Enter the name of the food: Enter the description of the food: Enter the price of the food: Not a valid price, please enter a valid price: This food "Kimbap - yumyum" has now been added to the menu.
+Enter the name of the food: Enter the description of the food: Enter the price of the food: Not a valid price, please enter a valid price: Not a valid price, please enter a valid price: This food "Kimbap - yumyum" has now been added to the menu.
 
 Main Menu:
    1. Display Meal Options
@@ -22,5 +22,5 @@ Adminstrator-Only Menu:
    6. Display Balance
    7. Abort Program
 Select your option (1-7) : 
+Data saved and program exiting.
 
-Invalid input! End Of File character inputted.
