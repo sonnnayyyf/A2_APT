@@ -1,5 +1,41 @@
-Invalid input! File details exceed max length.
-ID max length: 5
-Name max length: 40
-Description max length: 255
-Invalid input! Files could not be loaded. Aborting Program.
+Invalid input! This Denomination has already been initialized. Cannot initialize again.
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Balance Summary
+-------------
+Denom  | Quantity | Value  
+---------------------------
+5      | 0        |$   0.00
+10     | 40       |$   4.00
+20     | 3        |$   0.60
+50     | 20       |$  10.00
+100    | 30       |$  30.00
+200    | 20       |$  40.00
+500    | 6        |$  30.00
+1000   | 10       |$ 100.00
+2000   | 10       |$ 200.00
+5000   | 10       |$ 500.00
+10000  | 0        |$   0.00
+---------------------------
+                   $ 914.60
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Data saved and program exiting.
+

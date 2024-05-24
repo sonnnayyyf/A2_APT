@@ -1,5 +1,25 @@
-Invalid input! File details exceed max length.
-ID max length: 5
-Name max length: 40
-Description max length: 255
-Invalid input! Files could not be loaded. Aborting Program.
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+The id for the new food will be F00088
+Enter the name of the food: Enter the description of the food: Enter the price of the food: This food "Sushi - yummy" has now been added to the menu.
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Adminstrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7) : 
+Data saved and program exiting.
+

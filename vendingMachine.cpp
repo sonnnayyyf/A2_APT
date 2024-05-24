@@ -69,10 +69,10 @@ void VendingMachine::addItem()
     cout << "Id is too large to be stored in menu" << endl;
   }
 
-  idString += std::to_string(id + 1);
-
   cout << "The id for the new food will be " << idString
        << std::to_string(id + 1) << endl;
+
+  idString += std::to_string(id + 1);
 
   cout << "Enter the name of the food: ";
   string name = "";
