@@ -16,7 +16,6 @@ LinkedList::LinkedList() {
   head = nullptr;
   tail = nullptr;
   count = 0;
-  // TODO
 }
 
 // Deconstructor
@@ -93,7 +92,8 @@ void LinkedList::addItem(FoodItem *foodItem) {
 void LinkedList::remove(std::string foodID) {
   Node *curr = this->head;
   Node *prev = nullptr;
-
+  
+  // Traverse the list until we find the node with the given foodID or reach the end of the list
   while (curr->foodItem->id != foodID && curr != nullptr) {
     prev = curr;
     curr = curr->next;
@@ -101,12 +101,12 @@ void LinkedList::remove(std::string foodID) {
 
   if (curr != nullptr) {
     if (curr == this->head) {
-      removeFront();
-    } else if (curr == this->tail) {
+      removeFront(); // Call the function to remove the head node
+    } else if (curr == this->tail) { // If the node to be removed is the tail node
       prev->next = nullptr;
       this->tail = prev;
       delete curr;
-    } else {
+    } else { // If the node to be removed is a middle node
       prev->next = curr->next;
       delete curr;
     }
