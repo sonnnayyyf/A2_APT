@@ -42,6 +42,7 @@ void VendingMachine::addItem() {
   bool adding = true;
   int id = this->foods->getHighestId();
   string idString = "";
+  // pick id header based on id number
   if (id < 9) {
     idString = "F000";
   } else if (id < 99) {
@@ -69,6 +70,7 @@ void VendingMachine::addItem() {
 
     // ensure the name is not too long (40 characters maximum)
     if (input.length() <= NAMELEN) {
+      // lookfor any "|" to deny
       if (input.find("|") == string::npos) {
         name = input;
 
@@ -80,6 +82,7 @@ void VendingMachine::addItem() {
           Helper::removeWhitespace(input);
 
           if (input.length() <= DESCLEN) {
+            // look for any "|" in thet description to deny
             if (input.find("|") == string::npos) {
               description = input;
 
@@ -152,6 +155,7 @@ bool VendingMachine::removeItem() {
   cout << "Enter the food id of the food to remove from the menu: ";
   std::getline(cin, input);
 
+  // detect End of file and Enter an empty line
   while (removing && !input.empty()) {
     input.erase(input.find_last_not_of(" \t\r\n\v\f") + 1);
     if (std::cin.eof()) {
