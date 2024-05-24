@@ -119,3 +119,7 @@ int main(int argc, char **argv) {
 // Compiling terminal code
 // g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp
 // ftt.cpp bank.cpp helper.cpp fileLoader.cpp vendingMachine.cpp
+
+// Memory Leak Checks
+// valgrind --leak-check=full --show-leak-kinds=all ./ftt foods.dat coins.dat
+// valgrind --track-origins=yes ./ftt foods.dat coins.dat
