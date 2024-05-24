@@ -48,10 +48,13 @@ void Bank::calcTotal() {
 
 float Bank::getTotal() { return this->total; }
 
+// get coin with DenomIndex variable
 Coin *Bank::getCoin(DenomIndex index) { return this->safe[index]; }
 
+// get coin with an int variable (index)
 Coin *Bank::getCoin(int index) { return this->safe[index]; }
 
+// get coin with an int variable (value)
 Coin *Bank::getCoinByCent(unsigned cents) {
   Coin *coin = nullptr;
   if (cents == HUNDRED_DOLLAR) {
@@ -82,6 +85,7 @@ Coin *Bank::getCoinByCent(unsigned cents) {
   return coin;
 }
 
+// increase/decrease the coin count in bank based on Operation
 bool Bank::manageBalance(unsigned cents, Operation op, int count) {
   bool success = false;
   Coin *coin = this->getCoinByCent(cents);
@@ -101,6 +105,7 @@ bool Bank::manageBalance(unsigned cents, Operation op, int count) {
   return success;
 }
 
+// print all the coins, their individual count and total
 void Bank::displayBalance() {
   this->calcTotal();
   std::cout << std::fixed << std::setprecision(2);
