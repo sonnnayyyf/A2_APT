@@ -1,2 +1,5 @@
-Invalid input! Input is not correctly formatted to read coins. Correct format is D,C D for denomination and C for count.
+Invalid input! File details exceed max length.
+ID max length: 5
+Name max length: 40
+Description max length: 255
 Invalid input! Files could not be loaded. Aborting Program.

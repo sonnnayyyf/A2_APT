@@ -167,6 +167,13 @@ run_test "foods.dat" "coins.dat" "./purchase_tests/purchase9.input" "./purchase_
 run_test "foods.dat" "coins.dat" "./purchase_tests/purchase10.input" "./purchase_tests/purchase10.expected_output" "./output.txt" 10
 
 
+
+
+echo "Running addFood tests"
+echo "------------------------------------"
+echo ""
+
+run_test "foods.dat" "coins.dat" "./addFood_test/addFood_valid/addFood.input" "./addFood_test/addFood_valid/addFood.expected_output" "./output.txt" 1
  
 
 

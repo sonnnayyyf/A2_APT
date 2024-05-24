@@ -1,2 +1,5 @@
-Invalid input! Denom and count inputs must be greater than or equal to zero.
+Invalid input! File details exceed max length.
+ID max length: 5
+Name max length: 40
+Description max length: 255
 Invalid input! Files could not be loaded. Aborting Program.
