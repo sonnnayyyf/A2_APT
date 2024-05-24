@@ -53,5 +53,6 @@
     },
     "githubPullRequests.ignoredPullRequestBranches": [
         "main"
-    ]
+    ],
+    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, ColumnLimit: 80 }"
 }
