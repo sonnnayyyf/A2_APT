@@ -279,14 +279,17 @@ bool VendingMachine::refund(unsigned int amount, int index,
   if (amount == 0) {
     possible = true;
   } else if (index < NUM_DENOMS) {
+    // only consider the number of coins that can be taken from the bank and the total is not higher than the amount needed
     int Range = std::min(this->bank->getCoin(index)->getCount(),
                          amount / this->bank->getCoin(index)->getDenom());
     for (int i = Range; i >= 0 && !possible; i--) {
       int Remainingamount =
           amount - (i * this->bank->getCoin(index)->getDenom());
+      // recursion function start here
       possible =
           refund(Remainingamount, index + 1, changeOutput, refundedBills);
       if (possible) {
+        // necessary when there are more than 1 coin of the same denomination to refund
         int return_count = i;
         while (return_count > 0) {
           if (this->bank->getCoin(index)->getDenom() < 100) {
