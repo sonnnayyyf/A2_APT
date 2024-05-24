@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
               } else if (choice == 2) {
                 vendingMachine->purchaseItem();
               } else if (choice == 3) {
-                vendingMachine->saveData("foodsTest.dat", "coinsTest.dat");
+                vendingMachine->saveData("foods.dat", "coins.dat");
                 cout << "Data saved and program exiting." << endl;
                 menuRunning = false;
               } else if (choice == 4) {

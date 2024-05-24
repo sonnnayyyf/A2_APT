@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Compile the C++ program
-g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp
+g++ -Wall -Werror -std=c++14 -g -O -o ftt coin.cpp node.cpp linkedList.cpp ftt.cpp bank.cpp helper.cpp fileLoader.cpp vendingMachine.cpp
 
 # Go to loadingData_tests directory
 # cd ./loadingData_tests
@@ -31,6 +31,31 @@ run_test() {
     echo ""
 }
 
+run_test() {
+    local args1="$1"
+    local args2="$2"
+    local input_file="$3"
+    local expected_output_file="$4"
+    local output_file="$5"
+
+    echo "Running test $6"
+    ./ftt $args1 $args2 < "$input_file" > "$output_file"
+    # diff -w -y "$expected_output_file" "$output_file"
+    if diff -q "$expected_output_file" "$output_file" >/dev/null; then
+        echo "Test $6 passed"
+    else
+        echo "Test $6 failed"
+    fi
+    echo ""
+}
+
+
+
+
+
+
+
+
 compare_coins() {
     local expected_output_file="$1"
     local output_file="$2"
@@ -45,6 +70,9 @@ compare_coins() {
 }
 
 # The tests below mainly focus only reading food data from a file
+echo "Running loading data tests"
+echo "------------------------------------"
+echo ""
 
 # Test 1
 # Testing for invalid command line argurments like having too many or too little
@@ -123,6 +151,14 @@ run_test "foods.dat" "./loadingData_tests/input12.txt" "./loadingData_tests/noin
 run_test "foods.dat" "./loadingData_tests/input13.txt" "./loadingData_tests/commands13.txt" "./loadingData_tests/expected13.txt" "./loadingData_tests/output13.txt" 13
 
 compare_coins "./coinsTest.dat" "./loadingData_tests/expectedCoins13.dat" 13
+
+echo "Running purchase tests"
+echo "------------------------------------"
+echo ""
+
+run_test "foods.dat" "coins.dat" "./purchase_tests/purchase1.input" "./purchase_tests/purchase1.expected_output" "./output.txt" 1
+compare_coins "./coins.dat" "./purchase_tests/purchase1.expected_coins" 1
+
 
 
  

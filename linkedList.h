@@ -1,39 +1,41 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
-#include "node.h"
 #include <iomanip>
+
 #include "helper.h"
+#include "node.h"
 
-class LinkedList
-{
-public:
-    LinkedList();
-    ~LinkedList();
+class LinkedList {
+ public:
+  LinkedList();
+  ~LinkedList();
 
-    // more functions to be added perhaps...
-    unsigned size();
+  // more functions to be added perhaps...
+  unsigned size();
 
-    FoodItem *get(std::string FoodItem);
+  FoodItem *get(std::string FoodItem);
 
-    void addFront(FoodItem *);
-    void addItem(FoodItem *);
+  void addFront(FoodItem *);
+  void addItem(FoodItem *);
 
-    void remove(std::string foodID);
+  void remove(std::string foodID);
 
-    void removeFront();
-    void removeBack();
-    void addFood();
+  void removeFront();
+  void removeBack();
+  void addFood();
 
-    void displayItems();
-    Node *getHead();
+  void displayItems();
+  Node *getHead();
 
-private:
-    // the beginning of the list
-    Node *head;
-    Node *tail;
+  int getHighestId();
 
-    // how many nodes are there in the list?
-    unsigned count;
+ private:
+  // the beginning of the list
+  Node *head;
+  Node *tail;
+
+  // how many nodes are there in the list?
+  unsigned count;
 };
 
-#endif // LINKEDLIST_H
+#endif  // LINKEDLIST_H

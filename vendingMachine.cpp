@@ -38,19 +38,22 @@ bool VendingMachine::loadVendingMachine(string foodFilePath,
 
 void VendingMachine::addItem() {
   bool adding = true;
-  string id = "";
-  if (this->foods->size() < 9) {
-    id = "F000";
-  } else if (this->foods->size() < 99) {
-    id = "F00";
-  } else if (this->foods->size() < 999) {
-    id = "F0";
-  } else if (this->foods->size() < 9999) {
-    id = "F";
+  int id = this->foods->getHighestId();
+  string idString = "";
+  if (id < 9) {
+    idString = "F000";
+  } else if (id < 99) {
+    idString = "F00";
+  } else if (id < 999) {
+    idString = "F0";
+  } else if (id < 9999) {
+    idString = "F";
+  } else {
+    cout << "Id is too large to be stored in menu" << endl;
   }
 
-  cout << "The id for the new food will be " << id << this->foods->size() + 1
-       << endl;
+  cout << "The id for the new food will be " << idString
+       << std::to_string(id + 1) << endl;
 
   cout << "Enter the name of the food: ";
   string name = "";
@@ -96,11 +99,10 @@ void VendingMachine::addItem() {
                     Helper::isNumber(split[1]) && stoi(split[1]) % 5 == 0 &&
                     stoi(split[0]) >= 0 && stoi(split[1]) >= 0 &&
                     (stoi(split[0]) + stoi(split[1]) > 0)) {
-                  id = id + std::to_string(this->foods->size() + 1);
-
-                  Price *price = new Price(stoi(split[0]), stoi(split[1]));
-                  FoodItem *item = new FoodItem(id, name, description, price,
-                                                DEFAULT_FOOD_STOCK_LEVEL);
+                                    Price *price = new Price(stoi(split[0]), stoi(split[1]));
+                  FoodItem *item =
+                      new FoodItem(std::to_string(id + 1), name, description,
+                                   price, DEFAULT_FOOD_STOCK_LEVEL);
 
                   this->foods->addItem(item);
                   cout << "This food \"" << name << " - " << description
@@ -187,7 +189,7 @@ void VendingMachine::purchaseItem() {
     if (curr != nullptr && curr->onHand > 0) {
       cout << "You have selected \"" << curr->name << " - " << curr->description
            << ".\"" << endl;
-      cout << "This will cost you $ " << curr->getPrice() << endl;
+      cout << "This will cost you $ " << curr->getPrice() << "." << endl;
       cout << "Please hand over the money - type in the value of each "
               "note/coin in cents."
            << endl;
