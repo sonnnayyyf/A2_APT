@@ -9,3 +9,5 @@ Wai Yan Lin - s3963096
 Contributions:
 
 Wai Yan Lin - Linked list, bank, node, implementation. Bash file for running tests for loading in data to the program. Tests for loading in data from foods and coins file. Implemented display balance and display menu functions. Revised functions to not use returns. Making the make file.
+
+Tran Hoang Son - Input validation, add function, find highest id, remove function and tests for them. Debugging add and remove. Sorting out the excel weekly tracking sheet to become informative for all members.
