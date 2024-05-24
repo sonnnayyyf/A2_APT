@@ -37,7 +37,6 @@ FoodItem::FoodItem(std::string id, std::string name, std::string description,
 FoodItem::~FoodItem() { delete this->price; }
 
 void FoodItem::printItem() {
-  cout << this->onHand;
   cout << setw(5) << left << this->id << "|";
   cout << setw(NAMELEN) << left << this->name;
 
