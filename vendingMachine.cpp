@@ -41,6 +41,7 @@ bool VendingMachine::loadVendingMachine(string foodFilePath,
 void VendingMachine::addItem() {
   bool adding = true;
   string id = "";
+  // create id heading based on the number assigned
   if (this->foods->size() < 9) {
     id = "F000";
   } else if (this->foods->size() < 99) {
@@ -60,9 +61,11 @@ void VendingMachine::addItem() {
   string input = "";
   std::getline(cin, input);
 
+  // detect End of file and Enter an empty line
   while (!cin.eof() && !input.empty() && adding) {
     Helper::removeWhitespace(input);
 
+    // ensure the name is not too long (40 characters maximum)
     if (input.length() <= NAMELEN) {
       if (input.find("|") == string::npos) {
         name = input;
@@ -70,6 +73,7 @@ void VendingMachine::addItem() {
         cout << "Enter the description of the food: ";
         std::getline(cin, input);
 
+        // detect End of file and Enter an empty line
         while (!cin.eof() && !input.empty() && adding) {
           Helper::removeWhitespace(input);
 
@@ -80,6 +84,7 @@ void VendingMachine::addItem() {
               cout << "Enter the price of the food: ";
               std::getline(cin, input);
 
+              // detect End of file and Enter an empty line
               while (!cin.eof() && !input.empty() && adding) {
                 Helper::removeWhitespace(input);
                 vector<string> split;
