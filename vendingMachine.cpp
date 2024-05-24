@@ -1,5 +1,6 @@
 #include "vendingMachine.h"
 #include <algorithm>
+#include "helper.h"
 
 using std::cin;
 using std::cout;
@@ -95,8 +96,8 @@ void VendingMachine::purchaseItem()
     }
     else
     {
+        Helper::removeWhitespace(choice);
         FoodItem *curr = this->foods->get(choice);
-        choice.erase(choice.find_last_not_of(" \t\r\n\v\f") + 1);
 
         if (curr != nullptr && curr->onHand > 0)
         {
@@ -129,7 +130,7 @@ void VendingMachine::purchaseItem()
                     cout << endl
                          << "Purchase cancelled!\n";
                     toPay = 0;
-                    cancel_purchase(paid_bills);
+                    cancelPurchase(paid_bills);
                 }
                 else
                 {
@@ -154,14 +155,17 @@ void VendingMachine::purchaseItem()
             if (toPay > 0)
             {
                 string changeOutput = "Your change is ";
-                if (refund(toPay, 0, changeOutput))
+                vector<int> refundedBills = {};
+                if (refund(toPay, 0, changeOutput, refundedBills))
                 {
                     cout << changeOutput << endl;
+                    curr->onHand -= 1;
                 }
                 else
                 {
                     cout << "Insufficient change in system. Purchase cancelled.\n";
-                    cancel_purchase(paid_bills);
+                    cancelPurchase(paid_bills);
+                    cancelRefund(refundedBills);
                 }
             }
         }
@@ -189,7 +193,7 @@ void VendingMachine::displayBalance()
     this->bank->displayBalance();
 }
 
-void VendingMachine::cancel_purchase(vector<int> paidBills)
+void VendingMachine::cancelPurchase(vector<int> paidBills)
 {
     for (auto &it : paidBills)
     {
@@ -197,7 +201,15 @@ void VendingMachine::cancel_purchase(vector<int> paidBills)
     }
 }
 
-bool VendingMachine::refund(unsigned int amount, int index, string &changeOutput)
+void VendingMachine::cancelRefund(vector<int> refundedBills)
+{
+    for (auto &it : refundedBills)
+    {
+        bank->manageBalance(it, ADD, 1);
+    }
+}
+
+bool VendingMachine::refund(unsigned int amount, int index, string &changeOutput, vector<int> refundedBills)
 {
     bool possible = false;
 
@@ -211,7 +223,7 @@ bool VendingMachine::refund(unsigned int amount, int index, string &changeOutput
         for (int i = Range; i >= 0 && !possible; i--)
         {
             int Remainingamount = amount - (i * this->bank->getCoin(index)->getDenom());
-            possible = refund(Remainingamount, index + 1, changeOutput);
+            possible = refund(Remainingamount, index + 1, changeOutput, refundedBills);
             if (possible)
             {
                 int return_count = i;

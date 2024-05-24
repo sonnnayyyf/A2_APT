@@ -51,3 +51,20 @@ string Helper::readInput()
 
     return input;
 }
+
+void Helper::removeWhitespace(std::string &str)
+{
+    str.erase(0, str.find_first_not_of(" \t\n\r\f\v"));
+    str.erase(str.find_last_not_of(" \t\n\r\f\v") + 1);
+
+    // Check if the string is not empty
+    if (!str.empty())
+    {
+        // Check if the last character is a newline character
+        if (str.back() == '\n')
+        {
+            // Remove the last character
+            str.pop_back();
+        }
+    }
+}

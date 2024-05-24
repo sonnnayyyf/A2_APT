@@ -18,8 +18,9 @@ public:
     void saveData(std::string foodFilePath, std::string coinFilePath); // Done
     void displayItems();                                               // Done
     void displayBalance();
-    void cancel_purchase(vector<int> paid_list); // Done
-    bool refund(unsigned int Amount, int index, std::string &changeOutput);
+    void cancelPurchase(vector<int> paidBills); // Done
+    void cancelRefund(vector<int> refundedBills);
+    bool refund(unsigned int Amount, int index, std::string &changeOutput, vector<int> refundedBills);
 
 private:
     Bank *bank;
