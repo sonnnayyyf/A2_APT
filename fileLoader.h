@@ -21,10 +21,10 @@ using std::vector;
 class FileLoader
 {
 public:
-    bool loadCoinData(string coinsFile, Bank *bank);
-    bool loadFoodData(string foodsFile, LinkedList *list);
-    void enterFoodData(string foodsFile, LinkedList *list);
-    void enterCoinData(string coinsFile, Bank *bank);
+    bool readCoinData(string coinsFile, Bank *bank);
+    bool readFoodData(string foodsFile, LinkedList *list);
+    void writeCoinData(string coinsFile, Bank *bank);
+    void writeFoodData(string foodsFile, LinkedList *list);
 };
 
 #endif // FILEREADER_H

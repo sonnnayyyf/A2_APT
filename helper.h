@@ -23,5 +23,7 @@ public:
     static void printInvalidInput(std::string str);
 
     static std::string readInput();
+
+    static void removeWhitespace(std::string &str);
 };
 #endif // HELPER_H

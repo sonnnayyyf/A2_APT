@@ -6,7 +6,7 @@ using std::string;
 using std::vector;
 
 Helper::Helper() {}
-
+// Some functions were taken from A1
 bool Helper::isNumber(string s)
 {
     bool isNumber = false;
@@ -50,4 +50,21 @@ string Helper::readInput()
     std::cout << std::endl;
 
     return input;
+}
+
+void Helper::removeWhitespace(std::string &str)
+{
+    str.erase(0, str.find_first_not_of(" \t\n\r\f\v"));
+    str.erase(str.find_last_not_of(" \t\n\r\f\v") + 1);
+
+    // Check if the string is not empty
+    if (!str.empty())
+    {
+        // Check if the last character is a newline character
+        if (str.back() == '\n')
+        {
+            // Remove the last character
+            str.pop_back();
+        }
+    }
 }

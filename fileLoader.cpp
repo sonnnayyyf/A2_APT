@@ -1,6 +1,6 @@
 #include "fileLoader.h"
 
-bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
+bool FileLoader::readCoinData(string coinsFile, Bank *bank)
 {
     int success = false;
     int reading = true;
@@ -31,17 +31,23 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
 
                     if (cents >= 0 && count >= 0)
                     {
-
-                        Coin *coin = bank->getCoinByCent(cents);
-                        if (!coin->isInitialized())
+                        if (cents % 5 == 0)
                         {
-                            coin->addCount(count);
-                            coin->initialize();
-                            success = true;
+                            Coin *coin = bank->getCoinByCent(cents);
+                            if (!coin->isInitialized())
+                            {
+                                coin->addCount(count);
+                                coin->initialize();
+                                success = true;
+                            }
+                            else
+                            {
+                                Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
+                            }
                         }
                         else
                         {
-                            Helper::printInvalidInput("This Denomination has already been initialized. Cannot initialize again.");
+                            Helper::printInvalidInput("This value of cents " + std::to_string(cents) + " cannot be added to the system.");
                         }
                     }
                     else
@@ -84,7 +90,7 @@ bool FileLoader::loadCoinData(string coinsFile, Bank *bank)
     return success;
 }
 
-bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
+bool FileLoader::readFoodData(string foodsFile, LinkedList *list)
 {
     int success = false;
     bool reading = true;
@@ -139,7 +145,7 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
                                 if (list->get(foodId) == nullptr)
                                 {
                                     FoodItem *item = new FoodItem(foodId, foodName, foodDesc, new Price((unsigned)dollars, (unsigned)cents), DEFAULT_FOOD_STOCK_LEVEL);
-                                    list->addBack(item);
+                                    list->addItem(item);
                                     success = true;
                                 }
                                 else
@@ -208,7 +214,19 @@ bool FileLoader::loadFoodData(string foodsFile, LinkedList *list)
     return success;
 }
 
-void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
+void FileLoader::writeCoinData(string coinsFile, Bank *bank)
+{
+    ofstream inputFile(coinsFile);
+    Coin *current_coin = nullptr;
+    for (int i = 0; i < NUM_DENOMS; i++)
+    {
+        current_coin = bank->getCoin(i);
+        inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
+    }
+    inputFile.close();
+}
+
+void FileLoader::writeFoodData(string foodsFile, LinkedList *list)
 {
     ofstream inputFile(foodsFile);
     Node *curr = list->getHead();
@@ -218,16 +236,5 @@ void FileLoader::enterFoodData(string foodsFile, LinkedList *list)
         curr = curr->next;
     }
 
-    inputFile.close();
-}
-void FileLoader::enterCoinData(string coinsFile, Bank *bank)
-{
-    ofstream inputFile(coinsFile);
-    Coin *current_coin = nullptr;
-    for (int i = 0; i < NUM_DENOMS; i++)
-    {
-        current_coin = bank->getCoin(i);
-        inputFile << current_coin->getDenom() << "," << current_coin->getCount() << endl;
-    }
     inputFile.close();
 }
