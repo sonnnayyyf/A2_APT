@@ -340,7 +340,7 @@ void LinkedList::addFood()
     Helper::splitString(dollars, split, ".");
 
     // check if the price is valid
-    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1]))
+    while (split.size() != 2 || !Helper::isNumber(split[0]) || !Helper::isNumber(split[1]) || stoi(split[1]) % 5!= 0)
     {
         cout << "Not a valid price, please enter a valid price: ";
         std::getline(cin, dollars);
