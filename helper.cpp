@@ -6,7 +6,7 @@ using std::string;
 using std::vector;
 
 Helper::Helper() {}
-
+// Some functions were taken from A1
 bool Helper::isNumber(string s)
 {
     bool isNumber = false;
